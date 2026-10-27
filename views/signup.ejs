@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account — DiabetesCare</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/auth.css">
+</head>
+<body>
+
+  <div class="auth-page">
+
+    <!-- Left panel -->
+    <div class="auth-left">
+      <div class="brand">
+        <i class="fas fa-heartbeat brand-icon"></i>
+        <span>DiabetesCare</span>
+      </div>
+      <div class="auth-left-content">
+        <h2>Your health journey starts here.</h2>
+        <p>Join thousands managing their diabetes with clarity, consistency and care.</p>
+        <ul class="feature-list">
+          <li><i class="fas fa-check-circle"></i> Daily health tracking</li>
+          <li><i class="fas fa-check-circle"></i> Personalised recommendations</li>
+          <li><i class="fas fa-check-circle"></i> PDF health reports</li>
+          <li><i class="fas fa-check-circle"></i> Bilingual support</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Right panel -->
+    <div class="auth-right">
+      <div class="auth-card">
+        <div class="auth-card-header">
+          <h1>Create your account</h1>
+          <p>Fill in your details to get started</p>
+        </div>
+
+        <% if (error) { %>
+          <div class="alert alert-error">
+            <i class="fas fa-exclamation-circle"></i> <%= error %>
+          </div>
+        <% } %>
+
+        <form action="/signup" method="POST" class="auth-form">
+
+          <div class="form-row">
+            <div class="input-wrap">
+              <label for="name">Full Name</label>
+              <div class="input-icon-wrap">
+                <i class="fas fa-user input-icon"></i>
+                <input type="text" id="name" name="name" required placeholder="e.g., Rajan Kumar">
+              </div>
+            </div>
+            <div class="input-wrap">
+              <label for="age">Age</label>
+              <div class="input-icon-wrap">
+                <i class="fas fa-user-clock input-icon"></i>
+                <input type="number" id="age" name="age" min="1" max="120" placeholder="e.g., 65">
+              </div>
+            </div>
+          </div>
+
+          <div class="input-wrap">
+            <label for="email">Email Address</label>
+            <div class="input-icon-wrap">
+              <i class="fas fa-envelope input-icon"></i>
+              <input type="email" id="email" name="email" required placeholder="your@email.com" autocomplete="email">
+            </div>
+          </div>
+
+          <div class="input-wrap">
+            <label for="passInput">Password</label>
+            <div class="input-icon-wrap">
+              <i class="fas fa-lock input-icon"></i>
+              <input type="password" id="passInput" name="password" required placeholder="At least 6 characters">
+              <button type="button" class="eye-btn" onclick="togglePass('passInput','eyeIcon1')">
+                <i class="fas fa-eye" id="eyeIcon1"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="input-wrap">
+            <label for="confirmInput">Confirm Password</label>
+            <div class="input-icon-wrap">
+              <i class="fas fa-lock input-icon"></i>
+              <input type="password" id="confirmInput" name="confirm" required placeholder="Repeat your password">
+              <button type="button" class="eye-btn" onclick="togglePass('confirmInput','eyeIcon2')">
+                <i class="fas fa-eye" id="eyeIcon2"></i>
+              </button>
+            </div>
+          </div>
+
+          <button type="submit" class="auth-btn">
+            <i class="fas fa-user-plus"></i> Create Account
+          </button>
+
+        </form>
+
+        <div class="auth-switch">
+          Already have an account? <a href="/login">Sign in</a>
+        </div>
+
+        <div class="health-tip">
+          <i class="fas fa-lightbulb"></i>
+          <span>Tip: Drinking water before meals can help moderate blood sugar levels.</span>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+<script>
+function togglePass(inputId, iconId) {
+  const input = document.getElementById(inputId);
+  const icon  = document.getElementById(iconId);
+  input.type  = input.type === 'password' ? 'text' : 'password';
+  icon.className = input.type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+}
+</script>
+</body>
+</html>

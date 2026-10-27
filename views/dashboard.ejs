@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health Report — DiabetesCare</title>
+  <link rel="stylesheet" href="/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <i class="fas fa-heartbeat brand-icon"></i>
+        <span>DiabetesCare</span>
+      </div>
+      <div class="topbar-right">
+        <span class="user-greeting"><i class="fas fa-user-circle"></i> <%= userName %></span>
+        <a href="/logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-header">
+    <div class="page-header-inner">
+      <div>
+        <h1><%= language==='ta' ? 'ஆரோக்கிய அறிக்கை' : 'Health Report' %></h1>
+        <p><%= language==='ta' ? 'இன்றைய பகுப்பாய்வு முடிந்தது' : 'Analysis complete for ' %><%= routine.date.toDateString() %></p>
+      </div>
+      <a href="/" class="back-btn"><i class="fas fa-arrow-left"></i> <%= language==='ta' ? 'திரும்பு' : 'Back' %></a>
+    </div>
+  </div>
+
+  <main class="main-container">
+
+    <!-- Stats Row -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon blue"><i class="fas fa-user"></i></div>
+        <div class="stat-info">
+          <span class="stat-label"><%= language==='ta' ? 'பெயர்' : 'Patient' %></span>
+          <span class="stat-value"><%= routine.name %></span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon teal"><i class="fas fa-user-clock"></i></div>
+        <div class="stat-info">
+          <span class="stat-label"><%= language==='ta' ? 'வயது' : 'Age' %></span>
+          <span class="stat-value"><%= routine.age %> yrs</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon <%= routine.glucose > 180 ? 'red' : routine.glucose < 70 ? 'orange' : 'green' %>">
+          <i class="fas fa-tint"></i>
+        </div>
+        <div class="stat-info">
+          <span class="stat-label"><%= language==='ta' ? 'இரத்த சர்க்கரை' : 'Blood Glucose' %></span>
+          <span class="stat-value"><%= routine.glucose %> mg/dL
+            <span class="glucose-badge <%= routine.glucose > 180 ? 'badge-high' : routine.glucose < 70 ? 'badge-low' : 'badge-normal' %>">
+              <%= routine.glucose > 180 ? 'High' : routine.glucose < 70 ? 'Low' : 'Normal' %>
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon purple"><i class="fas fa-calendar-day"></i></div>
+        <div class="stat-info">
+          <span class="stat-label"><%= language==='ta' ? 'தேதி' : 'Date' %></span>
+          <span class="stat-value"><%= routine.date.toDateString() %></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Daily Details -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-icon"><i class="fas fa-clipboard-list"></i></div>
+        <h2><%= language==='ta' ? 'இன்றைய விவரங்கள்' : "Today's Log" %></h2>
+      </div>
+      <div class="details-grid">
+        <div class="detail-item">
+          <div class="detail-icon"><i class="fas fa-coffee"></i></div>
+          <div>
+            <span class="detail-label"><%= language==='ta' ? 'காலை உணவு' : 'Breakfast' %></span>
+            <span class="detail-value"><%= routine.breakfast || '—' %></span>
+          </div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-icon"><i class="fas fa-sun"></i></div>
+          <div>
+            <span class="detail-label"><%= language==='ta' ? 'மதிய உணவு' : 'Lunch' %></span>
+            <span class="detail-value"><%= routine.lunch || '—' %></span>
+          </div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-icon"><i class="fas fa-moon"></i></div>
+          <div>
+            <span class="detail-label"><%= language==='ta' ? 'இரவு உணவு' : 'Dinner' %></span>
+            <span class="detail-value"><%= routine.dinner || '—' %></span>
+          </div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-icon"><i class="fas fa-apple-alt"></i></div>
+          <div>
+            <span class="detail-label"><%= language==='ta' ? 'சிற்றுண்டி' : 'Snacks' %></span>
+            <span class="detail-value"><%= routine.snacks || '—' %></span>
+          </div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-icon"><i class="fas fa-running"></i></div>
+          <div>
+            <span class="detail-label"><%= language==='ta' ? 'உடற்பயிற்சி' : 'Activity' %></span>
+            <span class="detail-value"><%= routine.activity || '—' %></span>
+          </div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-icon"><i class="fas fa-brain"></i></div>
+          <div>
+            <span class="detail-label"><%= language==='ta' ? 'தியானம்' : 'Meditation' %></span>
+            <span class="detail-value"><%= routine.meditation || '—' %></span>
+          </div>
+        </div>
+        <div class="detail-item full-width">
+          <div class="detail-icon"><i class="fas fa-comment-alt"></i></div>
+          <div>
+            <span class="detail-label"><%= language==='ta' ? 'மன அழுத்த குறிப்பு' : 'Stress Note' %></span>
+            <span class="detail-value"><%= routine.stressNote || '—' %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommendations -->
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-icon"><i class="fas fa-stethoscope"></i></div>
+        <h2><%= language==='ta' ? 'பரிந்துரைகள்' : 'Clinical Recommendations' %></h2>
+      </div>
+      <div class="recommendation-list">
+        <% recommendations.forEach(r => { %>
+          <div class="rec-item <%= r.severity.toLowerCase() %>">
+            <div class="rec-severity-bar"></div>
+            <div class="rec-icon-wrap">
+              <% if(r.severity === 'High') { %>
+                <i class="fas fa-exclamation-circle"></i>
+              <% } else if(r.severity === 'Medium') { %>
+                <i class="fas fa-exclamation-triangle"></i>
+              <% } else { %>
+                <i class="fas fa-check-circle"></i>
+              <% } %>
+            </div>
+            <div class="rec-body">
+              <span class="rec-badge"><%= r.severity %></span>
+              <p><%= r.text %></p>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+
+      <div class="report-actions">
+        <a href="/download-pdf?name=<%= routine.name %>&age=<%= routine.age %>" class="pdf-btn">
+          <i class="fas fa-file-pdf"></i>
+          <%= language==='ta' ? 'PDF அறிக்கை பதிவிறக்கம்' : 'Download PDF Report' %>
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Chatbot -->
+  <div class="chatbot-wrapper">
+    <button class="chatbot-toggle" onclick="toggleChat()" aria-label="Open health assistant">
+      <i class="fas fa-comment-medical"></i>
+      <span><%= language==='ta' ? 'உதவி' : 'Ask Assistant' %></span>
+    </button>
+    <div class="chatbot-box" id="chatBox" role="dialog" aria-label="Health Assistant">
+      <div class="chatbot-header">
+        <i class="fas fa-robot"></i>
+        <span><%= language==='ta' ? 'ஆரோக்கிய உதவியாளர்' : 'Health Assistant' %></span>
+        <button class="close-chat" onclick="toggleChat()" aria-label="Close"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="chatbot-intro">
+        <p><%= language==='ta' ? 'நீரிழிவு தொடர்பான கேள்விகளை கேளுங்கள்.' : 'Ask me anything about diabetes management.' %></p>
+      </div>
+      <div id="chat-messages"></div>
+      <div class="chatbot-input">
+        <input type="text" id="userMsg"
+          placeholder="<%= language==='ta' ? 'கேள்வி கேளுங்கள்...' : 'Type your question...' %>"
+          onkeypress="if(event.key==='Enter') sendMsg()">
+        <button onclick="sendMsg()" aria-label="Send"><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>DiabetesCare &copy; <%= new Date().getFullYear() %> &nbsp;|&nbsp; Consult your doctor for medical advice</p>
+  </footer>
+
+<script>
+function toggleChat() {
+  document.getElementById('chatBox').classList.toggle('open');
+}
+function sendMsg() {
+  const input    = document.getElementById('userMsg');
+  const msg      = input.value.trim();
+  if (!msg) return;
+  const messages = document.getElementById('chat-messages');
+  messages.innerHTML += `<div class="chat-msg user"><span>${msg}</span></div>`;
+  fetch('/chatbot', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: msg, language: '<%= language %>' })
+  })
+  .then(r => r.json())
+  .then(data => {
+    messages.innerHTML += `<div class="chat-msg bot"><i class="fas fa-robot"></i><span>${data.reply}</span></div>`;
+    messages.scrollTop = messages.scrollHeight;
+  });
+  input.value = '';
+  messages.scrollTop = messages.scrollHeight;
+}
+</script>
+
+</body>
+</html>
