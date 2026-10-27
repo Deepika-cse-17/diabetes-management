@@ -1,9 +1,25 @@
+/* ─────────────────────────────────────────────────────────
+   Diabetes Management System — Auth pages CSS
+   ───────────────────────────────────────────────────────── */
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --primary:       #1a56db;
+  --primary-dark:  #1341b0;
+  --sidebar-bg:    #1e2a4a;
+  --white:         #ffffff;
+  --bg:            #f1f5f9;
+  --border:        #e2e8f0;
+  --text-main:     #0f172a;
+  --text-sub:      #64748b;
+  --text-muted:    #94a3b8;
+}
 
 body {
   font-family: 'Inter', Arial, sans-serif;
-  background: #f1f5f9;
-  color: #1e293b;
+  background: var(--bg);
+  color: var(--text-main);
   min-height: 100vh;
 }
 
@@ -13,28 +29,61 @@ body {
   min-height: 100vh;
 }
 
-/* Left panel */
+/* Left panel — dark navy matching the sidebar */
 .auth-left {
   width: 42%;
-  background: linear-gradient(160deg, #1a73e8 0%, #0d47a1 100%);
+  background: linear-gradient(155deg, var(--sidebar-bg) 0%, #111827 100%);
   color: white;
   display: flex;
   flex-direction: column;
   padding: 48px 52px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative blobs */
+.auth-left::before,
+.auth-left::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.1;
+}
+
+.auth-left::before {
+  width: 320px;
+  height: 320px;
+  background: var(--primary);
+  top: -80px;
+  right: -80px;
+}
+
+.auth-left::after {
+  width: 200px;
+  height: 200px;
+  background: #60a5fa;
+  bottom: -40px;
+  left: -40px;
 }
 
 .brand {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 700;
   margin-bottom: 64px;
+  position: relative;
+  z-index: 1;
 }
 
 .brand-icon {
-  font-size: 1.5rem;
-  color: #93c5fd;
+  font-size: 1.4rem;
+  color: #60a5fa;
+}
+
+.brand span {
+  line-height: 1.3;
 }
 
 .auth-left-content {
@@ -42,19 +91,22 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  position: relative;
+  z-index: 1;
 }
 
 .auth-left-content h2 {
-  font-size: 2rem;
+  font-size: 1.85rem;
   font-weight: 700;
   line-height: 1.3;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
+  color: #fff;
 }
 
 .auth-left-content p {
-  font-size: 1rem;
-  opacity: 0.82;
-  line-height: 1.6;
+  font-size: 0.95rem;
+  opacity: 0.75;
+  line-height: 1.65;
   margin-bottom: 36px;
 }
 
@@ -69,13 +121,14 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 0.95rem;
-  opacity: 0.9;
+  font-size: 0.9rem;
+  opacity: 0.88;
 }
 
 .feature-list li i {
   color: #86efac;
-  font-size: 1rem;
+  font-size: 0.95rem;
+  flex-shrink: 0;
 }
 
 /* Right panel */
@@ -86,11 +139,12 @@ body {
   justify-content: center;
   padding: 40px 24px;
   overflow-y: auto;
+  background: var(--bg);
 }
 
 .auth-card {
   width: 100%;
-  max-width: 420px;
+  max-width: 430px;
 }
 
 .auth-card-header {
@@ -100,13 +154,14 @@ body {
 .auth-card-header h1 {
   font-size: 1.75rem;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--text-main);
   margin-bottom: 6px;
 }
 
 .auth-card-header p {
-  font-size: 0.9rem;
-  color: #64748b;
+  font-size: 0.88rem;
+  color: var(--text-sub);
+  line-height: 1.5;
 }
 
 /* Alert */
@@ -147,7 +202,7 @@ body {
 }
 
 .input-wrap label {
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: #374151;
 }
@@ -160,8 +215,8 @@ body {
 
 .input-icon {
   position: absolute;
-  left: 14px;
-  color: #94a3b8;
+  left: 13px;
+  color: var(--text-muted);
   font-size: 0.85rem;
   pointer-events: none;
 }
@@ -169,19 +224,19 @@ body {
 .input-icon-wrap input {
   width: 100%;
   padding: 11px 14px 11px 38px;
-  border: 1.5px solid #e2e8f0;
+  border: 1.5px solid var(--border);
   border-radius: 8px;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-family: 'Inter', Arial, sans-serif;
-  color: #1e293b;
-  background: #fff;
+  color: var(--text-main);
+  background: var(--white);
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .input-icon-wrap input:focus {
   outline: none;
-  border-color: #1a73e8;
-  box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.1);
 }
 
 .eye-btn {
@@ -190,18 +245,18 @@ body {
   background: none;
   border: none;
   cursor: pointer;
-  color: #94a3b8;
+  color: var(--text-muted);
   font-size: 0.9rem;
   padding: 4px;
   transition: color 0.2s;
 }
 
-.eye-btn:hover { color: #1a73e8; }
+.eye-btn:hover { color: var(--primary); }
 
 .auth-btn {
   width: 100%;
   padding: 13px;
-  background: #1a73e8;
+  background: var(--primary);
   color: white;
   border: none;
   border-radius: 8px;
@@ -217,17 +272,17 @@ body {
   margin-top: 4px;
 }
 
-.auth-btn:hover { background: #1557b0; }
+.auth-btn:hover { background: var(--primary-dark, #1341b0); }
 
 .auth-switch {
   text-align: center;
   font-size: 0.875rem;
-  color: #64748b;
+  color: var(--text-sub);
   margin-bottom: 20px;
 }
 
 .auth-switch a {
-  color: #1a73e8;
+  color: var(--primary);
   font-weight: 600;
   text-decoration: none;
 }
@@ -239,7 +294,7 @@ body {
   align-items: flex-start;
   gap: 10px;
   background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border);
   border-radius: 8px;
   padding: 12px 14px;
   font-size: 0.82rem;
@@ -248,7 +303,7 @@ body {
 }
 
 .health-tip i {
-  color: #1a73e8;
+  color: var(--primary);
   margin-top: 2px;
   flex-shrink: 0;
 }
@@ -256,11 +311,20 @@ body {
 /* Responsive */
 @media (max-width: 768px) {
   .auth-page { flex-direction: column; }
-  .auth-left  { width: 100%; padding: 32px 24px; }
-  .auth-left-content h2 { font-size: 1.4rem; }
-  .auth-left .feature-list { display: none; }
-  .auth-left-content p    { display: none; }
-  .brand { margin-bottom: 0; }
+
+  .auth-left {
+    width: 100%;
+    padding: 28px 24px;
+  }
+
+  .auth-left::before { display: none; }
+  .auth-left::after  { display: none; }
+
   .auth-left-content { display: none; }
+
+  .brand { margin-bottom: 0; }
+
   .form-row { grid-template-columns: 1fr; }
+
+  .auth-right { padding: 32px 16px; }
 }

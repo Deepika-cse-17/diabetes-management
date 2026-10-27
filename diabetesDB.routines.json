@@ -1,0 +1,203 @@
+[{
+  "_id": {
+    "$oid": "695534766f500323ad6646e0"
+  },
+  "name": "Deepika ",
+  "age": 50,
+  "glucose": 150,
+  "breakfast": "dosa",
+  "lunch": "rice",
+  "dinner": "dosa",
+  "snacks": "biscuits",
+  "activity": "cycling 15 mins",
+  "meditation": "No",
+  "stressNote": "good day ",
+  "date": {
+    "$date": "2025-12-31T14:34:30.845Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695536186f500323ad6646e2"
+  },
+  "name": "Deepika ",
+  "age": 50,
+  "glucose": 150,
+  "breakfast": "dosa",
+  "lunch": "rice",
+  "dinner": "chapati",
+  "snacks": "biscuits",
+  "activity": "cycling 15 mins",
+  "meditation": "no",
+  "stressNote": "good day",
+  "date": {
+    "$date": "2025-12-31T14:41:28.279Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "695536476f500323ad6646e4"
+  },
+  "name": "தீபிகா",
+  "age": 50,
+  "glucose": 300,
+  "breakfast": "இட்லி",
+  "lunch": "பருப்பு",
+  "dinner": "தோசை",
+  "snacks": "பழம்",
+  "activity": "ஆம் 30 நிமிடம்",
+  "meditation": "ஆம்",
+  "stressNote": "இன்றைய நாள் நன்றாக இருந்தது",
+  "date": {
+    "$date": "2025-12-31T14:42:15.719Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6957681b3621b860275b6fa5"
+  },
+  "name": "",
+  "age": null,
+  "glucose": null,
+  "mealType": "breakfast",
+  "mealQuality": "light",
+  "activity": "good",
+  "stress": "low",
+  "severity": "Normal",
+  "recommendations": [
+    "உங்கள் நல்ல பழக்கங்களை தொடருங்கள்"
+  ],
+  "language": "ta",
+  "createdAt": {
+    "$date": "2026-01-02T06:39:23.439Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6957682a3621b860275b6fa7"
+  },
+  "name": "",
+  "age": null,
+  "glucose": null,
+  "mealType": "breakfast",
+  "mealQuality": "light",
+  "activity": "good",
+  "stress": "low",
+  "severity": "Normal",
+  "recommendations": [
+    "Maintain your healthy routine"
+  ],
+  "language": "en",
+  "createdAt": {
+    "$date": "2026-01-02T06:39:38.079Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "69576a792519e96089c5e9e0"
+  },
+  "name": "Deepika ",
+  "age": 50,
+  "glucose": 200,
+  "breakfast": "dosa",
+  "lunch": "rice",
+  "dinner": "dosa",
+  "snacks": "biscuits",
+  "activity": "cycling 15 mins",
+  "meditation": "No",
+  "stressNote": "good day",
+  "date": {
+    "$date": "2026-01-02T06:49:29.860Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ae03dbc5a31aa96eaa5e218"
+  },
+  "name": "தீபிகா",
+  "age": 41,
+  "glucose": 9,
+  "breakfast": "",
+  "lunch": "",
+  "dinner": "",
+  "snacks": "",
+  "activity": "",
+  "meditation": "",
+  "stressNote": "",
+  "date": {
+    "$date": "2026-10-27T05:59:24.380Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ae044722f5dc4eb52eda077"
+  },
+  "userId": {
+    "$oid": "6ae0444d2f5dc4eb52eda076"
+  },
+  "name": "Deepika ",
+  "age": 32,
+  "glucose": 110,
+  "breakfast": "",
+  "lunch": "",
+  "dinner": "",
+  "snacks": "",
+  "activity": "",
+  "meditation": "",
+  "stressNote": "",
+  "date": {
+    "$date": "2026-10-27T06:28:03.003Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ae044792f5dc4eb52eda078"
+  },
+  "userId": {
+    "$oid": "6ae0444d2f5dc4eb52eda076"
+  },
+  "name": "Deepika ",
+  "age": 32,
+  "glucose": 110,
+  "breakfast": "",
+  "lunch": "",
+  "dinner": "",
+  "snacks": "",
+  "activity": "",
+  "meditation": "",
+  "stressNote": "",
+  "date": {
+    "$date": "2026-10-27T06:28:09.840Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6ae04b575fed385669bdc15f"
+  },
+  "userId": {
+    "$oid": "6ae04b3e5fed385669bdc15e"
+  },
+  "name": "HARINI",
+  "age": 83,
+  "glucose": 81,
+  "breakfast": "",
+  "lunch": "",
+  "dinner": "",
+  "snacks": "",
+  "activity": "",
+  "meditation": "",
+  "stressNote": "",
+  "date": {
+    "$date": "2026-10-27T06:57:27.683Z"
+  },
+  "__v": 0
+}]
