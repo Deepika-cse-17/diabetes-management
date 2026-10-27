@@ -16,13 +16,15 @@ app.use(express.static("public"));
 app.set("view engine", "ejs");
 
 app.use(session({
-  secret: "diabetes_secret_key_2024",
+  secret: process.env.SESSION_SECRET || "diabetes_secret_key_2024",
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 1000 * 60 * 60 * 24 } // 1 day
+  cookie: { maxAge: 1000 * 60 * 60 * 24 }
 }));
 
-mongoose.connect("mongodb://127.0.0.1:27017/diabetesDB")
+console.log("MONGODB_URI:", process.env.MONGODB_URI ? "SET" : "NOT SET — falling back to localhost");
+
+mongoose.connect(process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/diabetesDB")
   .then(() => console.log("✅ MongoDB Connected"))
   .catch(err => console.log(err));
 
@@ -184,4 +186,4 @@ app.post("/chatbot", requireLogin, (req, res) => {
   res.json({ reply });
 });
 
-app.listen(3000, () => console.log("🚀 Server running on http://localhost:3000"));
+app.listen(process.env.PORT || 3000, () => console.log(`🚀 Server running on port ${process.env.PORT || 3000}`));
