@@ -69,11 +69,11 @@ app.post("/signup", async (req, res) => {
   const { name, email, password, confirm, age } = req.body;
   try {
     if (password !== confirm)
-      return res.render("signup", { error: "Passwords do not match 🔑" });
+      return res.render("signup", { error: "Passwords do not match" });
 
     const existing = await User.findOne({ email });
     if (existing)
-      return res.render("signup", { error: "An account with this email already exists 📧" });
+      return res.render("signup", { error: "An account with this email already exists" });
 
     const hashed = await bcrypt.hash(password, 10);
     const user   = new User({ name, email, password: hashed, age });
@@ -83,7 +83,8 @@ app.post("/signup", async (req, res) => {
     req.session.userName = user.name;
     res.redirect("/");
   } catch (err) {
-    res.render("signup", { error: "Something went wrong. Please try again." });
+    console.error("Signup error:", err.message);
+    res.render("signup", { error: "Error: " + err.message });
   }
 });
 
