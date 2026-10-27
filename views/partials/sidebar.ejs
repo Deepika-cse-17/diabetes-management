@@ -4,32 +4,32 @@
   <div class="sidebar-logo">
     <a href="/">
       <i class="fas fa-heartbeat"></i>
-      <span>Diabetes Management System</span>
+      <span><%= lang==='ta' ? 'நீரிழிவு மேலாண்மை' : 'Diabetes Management System' %></span>
     </a>
   </div>
 
   <nav class="sidebar-nav">
-    <span class="nav-section-label">Main</span>
-    <a href="/"            class="<%= page==='dashboard'   ? 'active' : '' %>"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-    <a href="/routines"    class="<%= page==='routines'    ? 'active' : '' %>"><i class="fas fa-calendar-check"></i> My Routines</a>
-    <a href="/blood-sugar" class="<%= page==='blood-sugar' ? 'active' : '' %>"><i class="fas fa-tint"></i> Blood Sugar Log</a>
+    <span class="nav-section-label"><%= lang==='ta' ? 'முகப்பு' : 'Main' %></span>
+    <a href="/"            class="<%= page==='dashboard'   ? 'active' : '' %>"><i class="fas fa-tachometer-alt"></i> <%= lang==='ta' ? 'டாஷ்போர்டு'       : 'Dashboard' %></a>
+    <a href="/routines"    class="<%= page==='routines'    ? 'active' : '' %>"><i class="fas fa-calendar-check"></i> <%= lang==='ta' ? 'என் வழக்கங்கள்'    : 'My Routines' %></a>
+    <a href="/blood-sugar" class="<%= page==='blood-sugar' ? 'active' : '' %>"><i class="fas fa-tint"></i>            <%= lang==='ta' ? 'சர்க்கரை பதிவு'   : 'Blood Sugar Log' %></a>
 
-    <span class="nav-section-label">Health</span>
-    <a href="/meals"      class="<%= page==='meals'      ? 'active' : '' %>"><i class="fas fa-utensils"></i> Meals</a>
-    <a href="/exercise"   class="<%= page==='exercise'   ? 'active' : '' %>"><i class="fas fa-running"></i> Exercise</a>
-    <a href="/medication" class="<%= page==='medication' ? 'active' : '' %>"><i class="fas fa-pills"></i> Medication</a>
-    <a href="/reports"    class="<%= page==='reports'    ? 'active' : '' %>"><i class="fas fa-file-medical-alt"></i> Reports</a>
+    <span class="nav-section-label"><%= lang==='ta' ? 'ஆரோக்கியம்' : 'Health' %></span>
+    <a href="/meals"      class="<%= page==='meals'      ? 'active' : '' %>"><i class="fas fa-utensils"></i>         <%= lang==='ta' ? 'உணவுகள்'           : 'Meals' %></a>
+    <a href="/exercise"   class="<%= page==='exercise'   ? 'active' : '' %>"><i class="fas fa-running"></i>          <%= lang==='ta' ? 'உடற்பயிற்சி'       : 'Exercise' %></a>
+    <a href="/medication" class="<%= page==='medication' ? 'active' : '' %>"><i class="fas fa-pills"></i>            <%= lang==='ta' ? 'மருந்துகள்'         : 'Medication' %></a>
+    <a href="/reports"    class="<%= page==='reports'    ? 'active' : '' %>"><i class="fas fa-file-medical-alt"></i> <%= lang==='ta' ? 'அறிக்கைகள்'        : 'Reports' %></a>
 
-    <span class="nav-section-label">Account</span>
-    <a href="/profile"    class="<%= page==='profile'    ? 'active' : '' %>"><i class="fas fa-user-circle"></i> Profile</a>
-    <a href="/logout" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    <span class="nav-section-label"><%= lang==='ta' ? 'கணக்கு' : 'Account' %></span>
+    <a href="/profile"    class="<%= page==='profile'    ? 'active' : '' %>"><i class="fas fa-user-circle"></i>      <%= lang==='ta' ? 'சுயவிவரம்'         : 'Profile' %></a>
+    <a href="/logout" class="logout-link"><i class="fas fa-sign-out-alt"></i>                                        <%= lang==='ta' ? 'வெளியேறு'          : 'Logout' %></a>
   </nav>
 
   <div class="sidebar-bottom">
     <div class="glucose-meter-card">
       <i class="fas fa-stethoscope"></i>
-      <strong>Health Monitor</strong>
-      <p>Track your glucose and stay healthy every day</p>
+      <strong><%= lang==='ta' ? 'ஆரோக்கிய கண்காணிப்பு' : 'Health Monitor' %></strong>
+      <p><%= lang==='ta' ? 'உங்கள் சர்க்கரையை கண்காணியுங்கள்' : 'Track your glucose every day' %></p>
     </div>
   </div>
 </aside>
