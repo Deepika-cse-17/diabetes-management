@@ -10,8 +10,7 @@
 <body>
 <%- include('partials/sidebar') %>
 <div class="page-wrapper">
-  <% var topbarTitle = '<i class="fas fa-calendar-check" style="color:var(--primary);margin-right:6px;"></i> My Routines'; %>
-  <%- include('partials/topbar') %>
+  <%- include('partials/topbar', { topbarTitle: '<i class="fas fa-calendar-check" style="color:var(--primary);margin-right:6px;"></i> My Routines' }) %>
   <div class="tip-banner"><i class="fas fa-info-circle tip-icon"></i><div class="tip-track"><span class="tip-scroll">Walk 10 minutes after meals &nbsp;|&nbsp; Include more fibre and vegetables &nbsp;|&nbsp; Drink at least 8 glasses of water daily &nbsp;|&nbsp; Aim for 7–8 hours of sleep &nbsp;|&nbsp; 5 minutes of deep breathing reduces stress</span></div></div>
   <div class="page-content">
     <div class="welcome-banner">

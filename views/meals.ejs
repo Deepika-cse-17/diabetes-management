@@ -10,8 +10,7 @@
 <body>
 <%- include('partials/sidebar') %>
 <div class="page-wrapper">
-  <% var topbarTitle = '<i class="fas fa-utensils" style="color:var(--primary);margin-right:6px;"></i> Meals'; %>
-  <%- include('partials/topbar') %>
+  <%- include('partials/topbar', { topbarTitle: '<i class="fas fa-utensils" style="color:var(--primary);margin-right:6px;"></i> Meals' }) %>
   <div class="page-content">
     <div class="welcome-banner"><h1>Meals Log</h1><p>Your recent meal history.</p></div>
     <div class="card">

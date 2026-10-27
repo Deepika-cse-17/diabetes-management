@@ -10,8 +10,7 @@
 <body>
 <%- include('partials/sidebar') %>
 <div class="page-wrapper">
-  <% var topbarTitle = '<i class="fas fa-chart-line" style="color:var(--primary);margin-right:6px;"></i> Health Report'; %>
-  <%- include('partials/topbar') %>
+  <%- include('partials/topbar', { topbarTitle: '<i class="fas fa-chart-line" style="color:var(--primary);margin-right:6px;"></i> Health Report' }) %>
   <div class="page-content">
 
     <div class="welcome-banner">

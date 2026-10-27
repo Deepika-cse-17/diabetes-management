@@ -10,8 +10,7 @@
 <body>
 <%- include('partials/sidebar') %>
 <div class="page-wrapper">
-  <% var topbarTitle = '<i class="fas fa-tint" style="color:var(--primary);margin-right:6px;"></i> Blood Sugar Log'; %>
-  <%- include('partials/topbar') %>
+  <%- include('partials/topbar', { topbarTitle: '<i class="fas fa-tint" style="color:var(--primary);margin-right:6px;"></i> Blood Sugar Log' }) %>
   <div class="page-content">
     <div class="welcome-banner"><h1>Blood Sugar Log</h1><p>Your glucose readings over the past 30 days.</p></div>
     <div class="card" style="margin-bottom:20px;">

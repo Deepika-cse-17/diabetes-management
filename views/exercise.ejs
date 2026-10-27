@@ -10,8 +10,7 @@
 <body>
 <%- include('partials/sidebar') %>
 <div class="page-wrapper">
-  <% var topbarTitle = '<i class="fas fa-running" style="color:var(--primary);margin-right:6px;"></i> Exercise'; %>
-  <%- include('partials/topbar') %>
+  <%- include('partials/topbar', { topbarTitle: '<i class="fas fa-running" style="color:var(--primary);margin-right:6px;"></i> Exercise' }) %>
   <div class="page-content">
     <div class="welcome-banner"><h1>Exercise Log</h1><p>Your physical activity history.</p></div>
     <div class="stats-row" style="grid-template-columns:repeat(3,1fr);">

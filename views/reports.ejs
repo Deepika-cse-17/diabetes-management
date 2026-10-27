@@ -10,8 +10,7 @@
 <body>
 <%- include('partials/sidebar') %>
 <div class="page-wrapper">
-  <% var topbarTitle = '<i class="fas fa-file-medical-alt" style="color:var(--primary);margin-right:6px;"></i> Reports'; %>
-  <%- include('partials/topbar') %>
+  <%- include('partials/topbar', { topbarTitle: '<i class="fas fa-file-medical-alt" style="color:var(--primary);margin-right:6px;"></i> Reports' }) %>
   <div class="page-content">
     <div class="welcome-banner"><h1>Health Reports</h1><p>All your logged health records.</p></div>
     <% if(records.length>0){ %>

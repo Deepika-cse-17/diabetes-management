@@ -3,7 +3,7 @@
     <button class="hamburger" onclick="toggleSidebar()" aria-label="Toggle menu">
       <i class="fas fa-bars"></i>
     </button>
-    <span class="topbar-page-title"><%- topbarTitle %></span>
+  <span class="topbar-page-title"><%- locals.topbarTitle || '' %></span>
   </div>
   <div class="topbar-right">
     <div class="lang-switcher" id="langSwitcher">
