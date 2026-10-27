@@ -1,606 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard — Diabetes Management System</title>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health Report — Diabetes Management System</title>
   <link rel="stylesheet" href="/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
+<%- include('partials/sidebar') %>
+<div class="page-wrapper">
+  <% var topbarTitle = '<i class="fas fa-chart-line" style="color:var(--primary);margin-right:6px;"></i> Health Report'; %>
+  <%- include('partials/topbar') %>
+  <div class="page-content">
 
-  <!-- ── Sidebar Overlay (mobile) ── -->
-  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-
-  <!-- ══════════════════════════════
-       SIDEBAR
-  ══════════════════════════════ -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo">
-      <a href="/">
-        <i class="fas fa-heartbeat"></i>
-        <span>Diabetes Management System</span>
-      </a>
+    <div class="welcome-banner">
+      <h1><%= language==='ta' ? 'ஆரோக்கிய அறிக்கை' : 'Health Report' %></h1>
+      <p><%= language==='ta' ? 'இன்றைய பகுப்பாய்வு முடிந்தது' : 'Analysis complete for' %> <%= routine.date.toDateString() %></p>
     </div>
 
-    <nav class="sidebar-nav">
-      <span class="nav-section-label">Main</span>
-      <a href="/" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
-      <a href="/"><i class="fas fa-calendar-check"></i> My Routines</a>
-      <a href="/"><i class="fas fa-tint"></i> Blood Sugar Log</a>
-
-      <span class="nav-section-label">Health</span>
-      <a href="/"><i class="fas fa-utensils"></i> Meals</a>
-      <a href="/"><i class="fas fa-running"></i> Exercise</a>
-      <a href="/"><i class="fas fa-pills"></i> Medication</a>
-      <a href="/records"><i class="fas fa-file-medical-alt"></i> Reports</a>
-
-      <span class="nav-section-label">Support</span>
-      <a href="#" onclick="focusChatbot(); return false;"><i class="fas fa-robot"></i> Chatbot</a>
-      <a href="#"><i class="fas fa-user-circle"></i> Profile</a>
-      <a href="#"><i class="fas fa-cog"></i> Settings</a>
-      <a href="/logout" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
-    </nav>
-
-    <div class="sidebar-bottom">
-      <div class="glucose-meter-card">
-        <i class="fas fa-stethoscope"></i>
-        <strong>Health Monitor</strong>
-        <p>Track your glucose and stay healthy every day</p>
+    <!-- Stat Cards -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon-wrap si-blue"><i class="fas fa-user"></i></div>
+        <div class="stat-body">
+          <div class="stat-value"><%= routine.name %></div>
+          <div class="stat-label"><%= language==='ta' ? 'நோயாளி' : 'Patient' %></div>
+        </div>
       </div>
-    </div>
-  </aside>
-
-  <!-- ══════════════════════════════
-       TOP BAR
-  ══════════════════════════════ -->
-  <header class="topbar">
-    <div class="topbar-left">
-      <button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()" aria-label="Toggle menu">
-        <i class="fas fa-bars"></i>
-      </button>
-      <span class="topbar-page-title">
-        <i class="fas fa-tachometer-alt" style="color:var(--primary);margin-right:6px;"></i>
-        Dashboard
-      </span>
-    </div>
-
-    <div class="topbar-right">
-      <div class="lang-switcher">
-        <button class="lang-btn <%= language === 'en' ? 'active' : '' %>">English</button>
-        <button class="lang-btn <%= language === 'ta' ? 'active' : '' %>">&#2980;&#2990;&#3007;&#2996;&#3021;</button>
+      <div class="stat-card">
+        <div class="stat-icon-wrap si-teal"><i class="fas fa-user-clock"></i></div>
+        <div class="stat-body">
+          <div class="stat-value"><%= routine.age %> yrs</div>
+          <div class="stat-label"><%= language==='ta' ? 'வயது' : 'Age' %></div>
+        </div>
       </div>
-
-      <button class="notif-btn" aria-label="Notifications">
-        <i class="fas fa-bell"></i>
-        <span class="notif-dot"></span>
-      </button>
-
-      <div class="user-info" aria-label="User profile">
-        <div class="user-avatar"><%= userName ? userName.charAt(0).toUpperCase() : 'D' %></div>
-        <div class="user-meta">
-          <span class="user-name"><%= userName %></span>
-          <span class="user-role">Patient</span>
+      <div class="stat-card">
+        <div class="stat-icon-wrap <%= routine.glucose>180?'si-red':routine.glucose<70?'si-orange':'si-green' %>"><i class="fas fa-tint"></i></div>
+        <div class="stat-body">
+          <div class="stat-value"><%= routine.glucose %> <span style="font-size:0.8rem;color:var(--text-sub)">mg/dL</span>
+            <span class="glucose-badge <%= routine.glucose>180?'badge-high':routine.glucose<70?'badge-low':'badge-normal' %>">
+              <%= routine.glucose>180?'High':routine.glucose<70?'Low':'Normal' %>
+            </span>
+          </div>
+          <div class="stat-label"><%= language==='ta' ? 'இரத்த சர்க்கரை' : 'Blood Glucose' %></div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon-wrap si-purple"><i class="fas fa-calendar-day"></i></div>
+        <div class="stat-body">
+          <div class="stat-value" style="font-size:0.9rem;"><%= routine.date.toDateString() %></div>
+          <div class="stat-label"><%= language==='ta' ? 'தேதி' : 'Date' %></div>
         </div>
       </div>
     </div>
-  </header>
 
-  <!-- ══════════════════════════════
-       PAGE CONTENT
-  ══════════════════════════════ -->
-  <div class="page-wrapper">
-    <div class="page-content">
+    <!-- Main grid -->
+    <div class="dashboard-grid">
 
-      <!-- Welcome -->
-      <div class="welcome-banner">
-        <h1><%= language === 'ta' ? 'வணக்கம், ' + userName + '!' : 'Welcome, ' + userName + '!' %></h1>
-        <p>
-          <% if (language === 'ta') { %>
-            இன்றைய ஆரோக்கிய அறிக்கை — <%= routine.date.toDateString() %>
-          <% } else { %>
-            Here is your health summary for <%= routine.date.toDateString() %>
-          <% } %>
-        </p>
-      </div>
-
-      <!-- ── Stat Cards ── -->
-      <div class="stats-row">
-        <div class="stat-card">
-          <div class="stat-icon-wrap si-blue"><i class="fas fa-calendar-check"></i></div>
-          <div class="stat-body">
-            <div class="stat-value">1</div>
-            <div class="stat-label"><%= language === 'ta' ? 'மொத்த வழக்கங்கள்' : 'Total Routines' %></div>
-            <div class="stat-week"><%= language === 'ta' ? 'இந்த வாரம்' : 'This Week' %></div>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon-wrap <%= routine.glucose > 180 ? 'si-red' : routine.glucose < 70 ? 'si-orange' : 'si-teal' %>">
-            <i class="fas fa-tint"></i>
-          </div>
-          <div class="stat-body">
-            <div class="stat-value">
-              <%= routine.glucose %> <span style="font-size:0.85rem;color:var(--text-sub);">mg/dL</span>
-              <span class="glucose-badge <%= routine.glucose > 180 ? 'badge-high' : routine.glucose < 70 ? 'badge-low' : 'badge-normal' %>">
-                <%= routine.glucose > 180 ? 'High' : routine.glucose < 70 ? 'Low' : 'Normal' %>
-              </span>
-            </div>
-            <div class="stat-label"><%= language === 'ta' ? 'சராசரி சர்க்கரை' : 'Avg Blood Sugar' %></div>
-            <div class="stat-week"><%= language === 'ta' ? 'இந்த வாரம்' : 'This Week' %></div>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon-wrap si-green"><i class="fas fa-running"></i></div>
-          <div class="stat-body">
-            <div class="stat-value"><%= routine.activity && routine.activity.length > 2 ? '1' : '0' %></div>
-            <div class="stat-label"><%= language === 'ta' ? 'உடற்பயிற்சி' : 'Exercises' %></div>
-            <div class="stat-week"><%= language === 'ta' ? 'இந்த வாரம்' : 'This Week' %></div>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon-wrap si-purple"><i class="fas fa-pills"></i></div>
-          <div class="stat-body">
-            <div class="stat-value">2</div>
-            <div class="stat-label"><%= language === 'ta' ? 'மருந்துகள்' : 'Medications' %></div>
-            <div class="stat-week"><%= language === 'ta' ? 'இந்த வாரம்' : 'This Week' %></div>
+      <!-- Today's Log -->
+      <div class="card">
+        <div class="card-header"><h3><i class="fas fa-clipboard-list"></i> <%= language==='ta' ? 'இன்றைய பதிவு' : "Today's Log" %></h3></div>
+        <div class="card-body" style="padding:16px 20px;">
+          <div class="details-grid">
+            <div class="detail-item"><div class="detail-icon"><i class="fas fa-coffee"></i></div><div><span class="detail-label"><%= language==='ta'?'காலை உணவு':'Breakfast' %></span><span class="detail-value"><%= routine.breakfast||'—' %></span></div></div>
+            <div class="detail-item"><div class="detail-icon"><i class="fas fa-sun"></i></div><div><span class="detail-label"><%= language==='ta'?'மதிய உணவு':'Lunch' %></span><span class="detail-value"><%= routine.lunch||'—' %></span></div></div>
+            <div class="detail-item"><div class="detail-icon"><i class="fas fa-moon"></i></div><div><span class="detail-label"><%= language==='ta'?'இரவு உணவு':'Dinner' %></span><span class="detail-value"><%= routine.dinner||'—' %></span></div></div>
+            <div class="detail-item"><div class="detail-icon"><i class="fas fa-apple-alt"></i></div><div><span class="detail-label"><%= language==='ta'?'சிற்றுண்டி':'Snacks' %></span><span class="detail-value"><%= routine.snacks||'—' %></span></div></div>
+            <div class="detail-item"><div class="detail-icon"><i class="fas fa-running"></i></div><div><span class="detail-label"><%= language==='ta'?'உடற்பயிற்சி':'Activity' %></span><span class="detail-value"><%= routine.activity||'—' %></span></div></div>
+            <div class="detail-item"><div class="detail-icon"><i class="fas fa-brain"></i></div><div><span class="detail-label"><%= language==='ta'?'தியானம்':'Meditation' %></span><span class="detail-value"><%= routine.meditation||'—' %></span></div></div>
+            <div class="detail-item full-width"><div class="detail-icon"><i class="fas fa-comment-alt"></i></div><div><span class="detail-label"><%= language==='ta'?'மன அழுத்தம்':'Stress Note' %></span><span class="detail-value"><%= routine.stressNote||'—' %></span></div></div>
           </div>
         </div>
       </div>
 
-      <!-- ── Dashboard Grid: Chart + Summary ── -->
-      <div class="dashboard-grid">
+      <!-- Today's Summary -->
+      <div class="card">
+        <div class="card-header"><h3><i class="fas fa-clipboard-check"></i> <%= language==='ta'?'இன்றைய சுருக்கம்':"Today's Summary" %></h3></div>
+        <div class="summary-list">
+          <% var mealsLogged=[routine.breakfast,routine.lunch,routine.dinner].filter(function(m){return m&&m.length>0}).length; %>
+          <% var exDone=routine.activity&&routine.activity.length>2?1:0; %>
+          <% var medDone=routine.meditation&&routine.meditation.length>2?1:0; %>
 
-        <!-- Blood Sugar Trend Chart -->
-        <div class="card chart-card">
-          <div class="card-header">
-            <h3><i class="fas fa-chart-line"></i> <%= language === 'ta' ? 'சர்க்கரை போக்கு' : 'Blood Sugar Trend' %></h3>
-            <select class="chart-select" aria-label="Time range">
-              <option selected><%= language === 'ta' ? 'இந்த வாரம்' : 'This Week' %></option>
-              <option><%= language === 'ta' ? 'இந்த மாதம்' : 'This Month' %></option>
-            </select>
+          <div class="summary-item">
+            <div class="summary-icon si-orange"><i class="fas fa-utensils"></i></div>
+            <div class="summary-text"><div class="s-label"><%= language==='ta'?'உணவுகள்':'Meals' %></div><div class="s-sub"><%= mealsLogged %> / 3 <%= language==='ta'?'பதிவு':'Completed' %></div></div>
+            <div class="summary-check <%= mealsLogged===3?'done':'' %>"><i class="fas fa-<%= mealsLogged===3?'check-circle':'circle' %>"></i></div>
           </div>
-          <div class="card-body">
-            <div class="chart-container">
-              <canvas id="glucoseChart"></canvas>
-            </div>
+          <div class="summary-item">
+            <div class="summary-icon si-green"><i class="fas fa-running"></i></div>
+            <div class="summary-text"><div class="s-label"><%= language==='ta'?'உடற்பயிற்சி':'Exercise' %></div><div class="s-sub"><%= exDone %> / 1 <%= language==='ta'?'முடிந்தது':'Completed' %></div></div>
+            <div class="summary-check <%= exDone?'done':'' %>"><i class="fas fa-<%= exDone?'check-circle':'circle' %>"></i></div>
           </div>
-        </div>
-
-        <!-- Today's Summary -->
-        <div class="card">
-          <div class="card-header">
-            <h3><i class="fas fa-clipboard-check"></i> <%= language === 'ta' ? 'இன்றைய சுருக்கம்' : "Today's Summary" %></h3>
+          <div class="summary-item">
+            <div class="summary-icon si-purple"><i class="fas fa-brain"></i></div>
+            <div class="summary-text"><div class="s-label"><%= language==='ta'?'தியானம்':'Meditation' %></div><div class="s-sub"><%= medDone %> / 1 <%= language==='ta'?'முடிந்தது':'Completed' %></div></div>
+            <div class="summary-check <%= medDone?'done':'' %>"><i class="fas fa-<%= medDone?'check-circle':'circle' %>"></i></div>
           </div>
-          <div class="summary-list">
-
-            <!-- Meals -->
-            <div class="summary-item">
-              <div class="summary-icon si-orange"><i class="fas fa-utensils"></i></div>
-              <div class="summary-text">
-                <div class="s-label"><%= language === 'ta' ? 'உணவுகள்' : 'Meals' %></div>
-                <div class="s-sub">
-                  <% var mealsLogged = [routine.breakfast, routine.lunch, routine.dinner].filter(function(m){ return m && m.length > 0; }).length; %>
-                  <%= mealsLogged %> / 3 <%= language === 'ta' ? 'பதிவு செய்யப்பட்டது' : 'logged' %>
-                </div>
-              </div>
-              <div class="summary-progress">
-                <div class="progress-track">
-                  <div class="progress-fill green" style="width:<%= Math.round(mealsLogged/3*100) %>%"></div>
-                </div>
-                <span class="s-count"><%= mealsLogged %>/3</span>
-              </div>
-            </div>
-
-            <!-- Exercise -->
-            <div class="summary-item">
-              <div class="summary-icon si-green"><i class="fas fa-running"></i></div>
-              <div class="summary-text">
-                <div class="s-label"><%= language === 'ta' ? 'உடற்பயிற்சி' : 'Exercise' %></div>
-                <div class="s-sub">
-                  <% var exerciseDone = (routine.activity && routine.activity.length > 2) ? 1 : 0; %>
-                  <%= exerciseDone %> / 1 <%= language === 'ta' ? 'முடிந்தது' : 'completed' %>
-                </div>
-              </div>
-              <div class="summary-progress">
-                <div class="progress-track">
-                  <div class="progress-fill green" style="width:<%= exerciseDone * 100 %>%"></div>
-                </div>
-                <span class="s-count"><%= exerciseDone %>/1</span>
-              </div>
-            </div>
-
-            <!-- Medication -->
-            <div class="summary-item">
-              <div class="summary-icon si-purple"><i class="fas fa-pills"></i></div>
-              <div class="summary-text">
-                <div class="s-label"><%= language === 'ta' ? 'மருந்து' : 'Medication' %></div>
-                <div class="s-sub">2 / 2 <%= language === 'ta' ? 'எடுக்கப்பட்டது' : 'taken' %></div>
-              </div>
-              <div class="summary-progress">
-                <div class="progress-track">
-                  <div class="progress-fill" style="width:100%"></div>
-                </div>
-                <span class="s-count">2/2</span>
-              </div>
-            </div>
-
-            <!-- Water Intake -->
-            <div class="summary-item">
-              <div class="summary-icon si-teal"><i class="fas fa-tint"></i></div>
-              <div class="summary-text">
-                <div class="s-label"><%= language === 'ta' ? 'தண்ணீர் உட்கொள்ளல்' : 'Water Intake' %></div>
-                <div class="s-sub">6 / 8 <%= language === 'ta' ? 'கிளாஸ்' : 'glasses' %></div>
-              </div>
-              <div class="summary-progress">
-                <div class="progress-track">
-                  <div class="progress-fill orange" style="width:75%"></div>
-                </div>
-                <span class="s-count">6/8</span>
-              </div>
-            </div>
-
+          <div class="summary-item">
+            <div class="summary-icon si-teal"><i class="fas fa-tint"></i></div>
+            <div class="summary-text"><div class="s-label"><%= language==='ta'?'தண்ணீர்':'Water Intake' %></div><div class="s-sub">Track daily</div></div>
+            <div class="summary-check"><div class="mini-progress"><div class="mini-fill" style="width:75%"></div></div></div>
           </div>
         </div>
-
       </div>
-      <!-- end dashboard-grid -->
+    </div>
 
-      <!-- ── Bottom Row ── -->
-      <div class="bottom-grid">
-
-        <!-- Recent Routines -->
-        <div class="card">
-          <div class="card-header">
-            <h3><i class="fas fa-list-ul"></i> <%= language === 'ta' ? 'சமீபத்திய வழக்கங்கள்' : 'Recent Routines' %></h3>
+    <!-- Recommendations + Chatbot -->
+    <div class="bottom-grid">
+      <div class="card">
+        <div class="card-header"><h3><i class="fas fa-stethoscope"></i> <%= language==='ta'?'பரிந்துரைகள்':'Clinical Recommendations' %></h3></div>
+        <div class="card-body">
+          <div class="rec-list">
+            <% recommendations.forEach(function(r){ %>
+            <div class="rec-item <%= r.severity.toLowerCase() %>">
+              <div class="rec-bar"></div>
+              <div class="rec-icon"><i class="fas fa-<%= r.severity==='High'?'exclamation-circle':r.severity==='Medium'?'exclamation-triangle':'check-circle' %>"></i></div>
+              <div class="rec-body"><span class="rec-badge"><%= r.severity %></span><p><%= r.text %></p></div>
+            </div>
+            <% }) %>
           </div>
-          <div class="routine-list">
-
-            <!-- Breakfast entry -->
-            <% if (routine.breakfast && routine.breakfast.length > 0) { %>
-            <div class="routine-item">
-              <div class="routine-avatar si-orange"><i class="fas fa-coffee"></i></div>
-              <div class="routine-body">
-                <div class="routine-title"><%= routine.breakfast %></div>
-                <div class="routine-sub"><%= language === 'ta' ? 'காலை உணவு' : 'Breakfast' %></div>
-              </div>
-              <span class="routine-time">8:00 AM</span>
-              <button class="routine-menu" aria-label="Options"><i class="fas fa-ellipsis-v"></i></button>
-            </div>
-            <% } %>
-
-            <!-- Activity entry -->
-            <% if (routine.activity && routine.activity.length > 0) { %>
-            <div class="routine-item">
-              <div class="routine-avatar si-green"><i class="fas fa-running"></i></div>
-              <div class="routine-body">
-                <div class="routine-title"><%= routine.activity %></div>
-                <div class="routine-sub"><%= language === 'ta' ? 'உடற்பயிற்சி' : 'Exercise' %></div>
-              </div>
-              <span class="routine-time">10:00 AM</span>
-              <button class="routine-menu" aria-label="Options"><i class="fas fa-ellipsis-v"></i></button>
-            </div>
-            <% } %>
-
-            <!-- Lunch entry -->
-            <% if (routine.lunch && routine.lunch.length > 0) { %>
-            <div class="routine-item">
-              <div class="routine-avatar si-teal"><i class="fas fa-sun"></i></div>
-              <div class="routine-body">
-                <div class="routine-title"><%= routine.lunch %></div>
-                <div class="routine-sub"><%= language === 'ta' ? 'மதிய உணவு' : 'Lunch' %></div>
-              </div>
-              <span class="routine-time">1:00 PM</span>
-              <button class="routine-menu" aria-label="Options"><i class="fas fa-ellipsis-v"></i></button>
-            </div>
-            <% } %>
-
-            <!-- Dinner entry -->
-            <% if (routine.dinner && routine.dinner.length > 0) { %>
-            <div class="routine-item">
-              <div class="routine-avatar si-blue"><i class="fas fa-moon"></i></div>
-              <div class="routine-body">
-                <div class="routine-title"><%= routine.dinner %></div>
-                <div class="routine-sub"><%= language === 'ta' ? 'இரவு உணவு' : 'Dinner' %></div>
-              </div>
-              <span class="routine-time">7:00 PM</span>
-              <button class="routine-menu" aria-label="Options"><i class="fas fa-ellipsis-v"></i></button>
-            </div>
-            <% } %>
-
-            <!-- Meditation entry -->
-            <% if (routine.meditation && routine.meditation.length > 0) { %>
-            <div class="routine-item">
-              <div class="routine-avatar si-purple"><i class="fas fa-brain"></i></div>
-              <div class="routine-body">
-                <div class="routine-title"><%= routine.meditation %></div>
-                <div class="routine-sub"><%= language === 'ta' ? 'தியானம்' : 'Meditation' %></div>
-              </div>
-              <span class="routine-time">9:00 PM</span>
-              <button class="routine-menu" aria-label="Options"><i class="fas fa-ellipsis-v"></i></button>
-            </div>
-            <% } %>
-
+          <div class="report-actions" style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;">
+            <a href="/download-pdf?name=<%= routine.name %>&age=<%= routine.age %>" class="pdf-btn"><i class="fas fa-file-pdf"></i> <%= language==='ta'?'PDF பதிவிறக்கம்':'Download PDF Report' %></a>
+            <a href="/routines" class="pdf-btn" style="background:#1a56db;"><i class="fas fa-plus"></i> <%= language==='ta'?'மீண்டும் பதிவு':'Log Another Day' %></a>
           </div>
-        </div>
-
-        <!-- Health Assistant (inline chatbot) -->
-        <div class="card chatbot-panel" id="chatbotPanel">
-          <div class="card-header">
-            <h3><i class="fas fa-robot"></i> <%= language === 'ta' ? 'ஆரோக்கிய உதவியாளர்' : 'Health Assistant' %></h3>
-          </div>
-          <div class="card-body">
-            <div class="chatbot-intro-bar">
-              <%= language === 'ta' ? 'நீரிழிவு தொடர்பான கேள்விகளை கேளுங்கள்.' : 'Ask me anything about diabetes management.' %>
-            </div>
-            <div id="chat-messages" role="log" aria-live="polite"></div>
-            <div class="chatbot-input-row">
-              <input type="text" id="userMsg"
-                placeholder="<%= language === 'ta' ? 'கேள்வி கேளுங்கள்...' : 'Type your question...' %>"
-                onkeypress="if(event.key==='Enter') sendMsg()"
-                aria-label="Chat message">
-              <button onclick="sendMsg()" aria-label="Send message"><i class="fas fa-paper-plane"></i></button>
-            </div>
-          </div>
-        </div>
-
-      </div>
-      <!-- end bottom-grid -->
-
-      <!-- ── Recommendations & Daily Log ── -->
-      <div class="dashboard-grid" style="margin-bottom:20px;">
-
-        <!-- Clinical Recommendations -->
-        <div class="card">
-          <div class="card-header">
-            <h3><i class="fas fa-stethoscope"></i> <%= language === 'ta' ? 'பரிந்துரைகள்' : 'Clinical Recommendations' %></h3>
-          </div>
-          <div class="card-body">
-            <div class="rec-list">
-              <% recommendations.forEach(function(r) { %>
-                <div class="rec-item <%= r.severity.toLowerCase() %>">
-                  <div class="rec-bar"></div>
-                  <div class="rec-icon">
-                    <% if (r.severity === 'High') { %>
-                      <i class="fas fa-exclamation-circle"></i>
-                    <% } else if (r.severity === 'Medium') { %>
-                      <i class="fas fa-exclamation-triangle"></i>
-                    <% } else { %>
-                      <i class="fas fa-check-circle"></i>
-                    <% } %>
-                  </div>
-                  <div class="rec-body">
-                    <span class="rec-badge"><%= r.severity %></span>
-                    <p><%= r.text %></p>
-                  </div>
-                </div>
-              <% }); %>
-            </div>
-            <div class="report-actions">
-              <a href="/download-pdf?name=<%= routine.name %>&age=<%= routine.age %>" class="pdf-btn">
-                <i class="fas fa-file-pdf"></i>
-                <%= language === 'ta' ? 'PDF அறிக்கை பதிவிறக்கம்' : 'Download PDF Report' %>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Today's Log Detail -->
-        <div class="card">
-          <div class="card-header">
-            <h3><i class="fas fa-clipboard-list"></i> <%= language === 'ta' ? 'இன்றைய பதிவு' : "Today's Log" %></h3>
-          </div>
-          <div class="card-body" style="padding:14px 18px;">
-            <div class="details-grid">
-              <div class="detail-item">
-                <div class="detail-icon"><i class="fas fa-user"></i></div>
-                <div>
-                  <span class="detail-label"><%= language === 'ta' ? 'பெயர்' : 'Patient' %></span>
-                  <span class="detail-value"><%= routine.name %></span>
-                </div>
-              </div>
-              <div class="detail-item">
-                <div class="detail-icon"><i class="fas fa-birthday-cake"></i></div>
-                <div>
-                  <span class="detail-label"><%= language === 'ta' ? 'வயது' : 'Age' %></span>
-                  <span class="detail-value"><%= routine.age %> yrs</span>
-                </div>
-              </div>
-              <div class="detail-item">
-                <div class="detail-icon"><i class="fas fa-coffee"></i></div>
-                <div>
-                  <span class="detail-label"><%= language === 'ta' ? 'காலை' : 'Breakfast' %></span>
-                  <span class="detail-value"><%= routine.breakfast || '—' %></span>
-                </div>
-              </div>
-              <div class="detail-item">
-                <div class="detail-icon"><i class="fas fa-sun"></i></div>
-                <div>
-                  <span class="detail-label"><%= language === 'ta' ? 'மதியம்' : 'Lunch' %></span>
-                  <span class="detail-value"><%= routine.lunch || '—' %></span>
-                </div>
-              </div>
-              <div class="detail-item">
-                <div class="detail-icon"><i class="fas fa-moon"></i></div>
-                <div>
-                  <span class="detail-label"><%= language === 'ta' ? 'இரவு' : 'Dinner' %></span>
-                  <span class="detail-value"><%= routine.dinner || '—' %></span>
-                </div>
-              </div>
-              <div class="detail-item">
-                <div class="detail-icon"><i class="fas fa-apple-alt"></i></div>
-                <div>
-                  <span class="detail-label"><%= language === 'ta' ? 'சிற்றுண்டி' : 'Snacks' %></span>
-                  <span class="detail-value"><%= routine.snacks || '—' %></span>
-                </div>
-              </div>
-              <div class="detail-item full-width">
-                <div class="detail-icon"><i class="fas fa-comment-alt"></i></div>
-                <div>
-                  <span class="detail-label"><%= language === 'ta' ? 'மன அழுத்தம்' : 'Stress Note' %></span>
-                  <span class="detail-value"><%= routine.stressNote || '—' %></span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- ── Quick Actions ── -->
-      <div class="card" style="margin-bottom:20px;">
-        <div class="card-header">
-          <h3><i class="fas fa-bolt"></i> <%= language === 'ta' ? 'விரைவு செயல்கள்' : 'Quick Actions' %></h3>
-        </div>
-        <div class="quick-actions-grid">
-          <a href="/" class="qa-btn qa-blue">
-            <i class="fas fa-plus-circle"></i>
-            <%= language === 'ta' ? 'வழக்கம் சேர்' : 'Add Routine' %>
-          </a>
-          <a href="/" class="qa-btn qa-green">
-            <i class="fas fa-tint"></i>
-            <%= language === 'ta' ? 'சர்க்கரை பதிவு' : 'Log Blood Sugar' %>
-          </a>
-          <a href="/download-pdf?name=<%= routine.name %>&age=<%= routine.age %>" class="qa-btn qa-orange">
-            <i class="fas fa-file-chart-line"></i>
-            <%= language === 'ta' ? 'அறிக்கை உருவாக்கு' : 'Generate Report' %>
-          </a>
-          <a href="#" onclick="focusChatbot(); return false;" class="qa-btn qa-purple">
-            <i class="fas fa-robot"></i>
-            <%= language === 'ta' ? 'உதவி கேள்' : 'Ask Chatbot' %>
-          </a>
         </div>
       </div>
 
-    </div><!-- end page-content -->
+      <!-- Inline Chatbot -->
+      <div class="card chatbot-panel" id="chatbotPanel">
+        <div class="card-header"><h3><i class="fas fa-robot"></i> <%= language==='ta'?'ஆரோக்கிய உதவியாளர்':'Health Assistant' %></h3></div>
+        <div class="chatbot-intro-bar"><%= language==='ta'?'நீரிழிவு தொடர்பான கேள்விகளை கேளுங்கள்.':'Ask me anything about diabetes management.' %></div>
+        <div id="chat-messages"></div>
+        <div class="chatbot-input-row">
+          <input type="text" id="userMsg" placeholder="<%= language==='ta'?'கேள்வி கேளுங்கள்...':'Type your question...' %>" onkeypress="if(event.key==='Enter')sendMsg()">
+          <button onclick="sendMsg()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
 
-    <footer class="footer">
-      Diabetes Management System &copy; <%= new Date().getFullYear() %> &nbsp;|&nbsp; Consult your doctor for medical advice
-    </footer>
-  </div><!-- end page-wrapper -->
+    <!-- Quick Actions -->
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-header"><h3><i class="fas fa-bolt"></i> <%= language==='ta'?'விரைவு செயல்கள்':'Quick Actions' %></h3></div>
+      <div class="quick-actions-grid">
+        <a href="/routines" class="qa-btn qa-blue"><i class="fas fa-plus-circle"></i> <%= language==='ta'?'வழக்கம் சேர்':'Add Routine' %></a>
+        <a href="/blood-sugar" class="qa-btn qa-green"><i class="fas fa-tint"></i> <%= language==='ta'?'சர்க்கரை பதிவு':'Log Blood Sugar' %></a>
+        <a href="/download-pdf?name=<%= routine.name %>&age=<%= routine.age %>" class="qa-btn qa-orange"><i class="fas fa-file-pdf"></i> <%= language==='ta'?'அறிக்கை':'Generate Report' %></a>
+        <a href="#" onclick="document.getElementById('userMsg').focus();return false;" class="qa-btn qa-purple"><i class="fas fa-robot"></i> <%= language==='ta'?'உதவி கேள்':'Ask Chatbot' %></a>
+      </div>
+    </div>
 
-  <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-    // ── Sidebar toggle ──
-    function toggleSidebar() {
-      document.getElementById('sidebar').classList.toggle('open');
-      document.getElementById('sidebarOverlay').classList.toggle('open');
-    }
-    function closeSidebar() {
-      document.getElementById('sidebar').classList.remove('open');
-      document.getElementById('sidebarOverlay').classList.remove('open');
-    }
+  </div>
+  <footer class="footer">Diabetes Management System &copy; <%= new Date().getFullYear() %> &nbsp;|&nbsp; Consult your doctor for medical advice</footer>
+</div>
 
-    // ── Scroll chatbot into view ──
-    function focusChatbot() {
-      document.getElementById('chatbotPanel').scrollIntoView({ behavior: 'smooth', block: 'center' });
-      document.getElementById('userMsg').focus();
-    }
-
-    // ── Chatbot ──
-    function sendMsg() {
-      const input    = document.getElementById('userMsg');
-      const msg      = input.value.trim();
-      if (!msg) return;
-      const messages = document.getElementById('chat-messages');
-      messages.innerHTML += `<div class="chat-msg user"><span>${escapeHtml(msg)}</span></div>`;
-      fetch('/chatbot', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ message: msg, language: '<%= language %>' })
-      })
-      .then(r => r.json())
-      .then(data => {
-        messages.innerHTML += `<div class="chat-msg bot"><i class="fas fa-robot"></i><span>${escapeHtml(data.reply)}</span></div>`;
-        messages.scrollTop = messages.scrollHeight;
-      });
-      input.value = '';
-      messages.scrollTop = messages.scrollHeight;
-    }
-
-    function escapeHtml(str) {
-      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-    }
-
-    // ── Blood Sugar Trend Chart ──
-    (function() {
-      const todayGlucose = <%= routine.glucose %>;
-      const today = new Date();
-      const days  = [];
-      const data  = [];
-
-      // Generate 6 prior days with plausible values, put today's real value at end
-      const baseVals = [112, 118, 108, 124, 115, 121];
-      for (let i = 6; i >= 1; i--) {
-        const d = new Date(today);
-        d.setDate(today.getDate() - i);
-        days.push(d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }));
-        data.push(baseVals[6 - i]);
-      }
-      days.push(today.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }));
-      data.push(todayGlucose);
-
-      const pointColors = data.map((v, i) => {
-        if (i === data.length - 1) return '#1a56db';
-        return v > 180 ? '#dc2626' : v < 70 ? '#ea580c' : '#0d9488';
-      });
-
-      const ctx = document.getElementById('glucoseChart').getContext('2d');
-      new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: days,
-          datasets: [{
-            label: '<%= language === "ta" ? "இரத்த சர்க்கரை (mg/dL)" : "Blood Glucose (mg/dL)" %>',
-            data: data,
-            fill: true,
-            backgroundColor: 'rgba(26,86,219,0.07)',
-            borderColor: '#1a56db',
-            borderWidth: 2,
-            tension: 0.4,
-            pointBackgroundColor: pointColors,
-            pointBorderColor: '#fff',
-            pointBorderWidth: 2,
-            pointRadius: 5,
-            pointHoverRadius: 7
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { display: false },
-            tooltip: {
-              callbacks: {
-                label: function(ctx) {
-                  const v = ctx.parsed.y;
-                  let status = v > 180 ? ' (High)' : v < 70 ? ' (Low)' : ' (Normal)';
-                  return v + ' mg/dL' + status;
-                }
-              }
-            }
-          },
-          scales: {
-            x: {
-              grid: { display: false },
-              ticks: { font: { size: 11 }, color: '#94a3b8' }
-            },
-            y: {
-              min: 60,
-              max: 200,
-              grid: { color: '#f1f5f9' },
-              ticks: {
-                font: { size: 11 },
-                color: '#94a3b8',
-                callback: v => v + ' mg'
-              }
-            }
-          }
-        }
-      });
-    })();
-  </script>
-
-</body>
-</html>
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('open');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('open');}
+function setLang(l){document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));document.getElementById('btn-'+l).classList.add('active');}
+function sendMsg(){
+  const input=document.getElementById('userMsg'),msg=input.value.trim();
+  if(!msg)return;
+  const box=document.getElementById('chat-messages');
+  box.innerHTML+=`<div class="chat-msg user"><span>${msg}</span></div>`;
+  fetch('/chatbot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg,language:'<%= language %>'})})
+  .then(r=>r.json()).then(d=>{
+    box.innerHTML+=`<div class="chat-msg bot"><i class="fas fa-robot"></i><span>${d.reply}</span></div>`;
+    box.scrollTop=box.scrollHeight;
+  });
+  input.value='';box.scrollTop=box.scrollHeight;
+}
+</script>
+</body></html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercise — Diabetes Management System</title>
+  <link rel="stylesheet" href="/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+<%- include('partials/sidebar') %>
+<div class="page-wrapper">
+  <% var topbarTitle = '<i class="fas fa-running" style="color:var(--primary);margin-right:6px;"></i> Exercise'; %>
+  <%- include('partials/topbar') %>
+  <div class="page-content">
+    <div class="welcome-banner"><h1>Exercise Log</h1><p>Your physical activity history.</p></div>
+    <div class="stats-row" style="grid-template-columns:repeat(3,1fr);">
+      <div class="stat-card"><div class="stat-icon-wrap si-green"><i class="fas fa-running"></i></div><div class="stat-body"><div class="stat-value"><%= records.length %></div><div class="stat-label">Total Sessions</div></div></div>
+      <div class="stat-card"><div class="stat-icon-wrap si-blue"><i class="fas fa-calendar-week"></i></div><div class="stat-body"><div class="stat-value"><%= records.filter(r=>{const d=new Date(r.date),n=new Date();return(n-d)<7*86400000}).length %></div><div class="stat-label">This Week</div></div></div>
+      <div class="stat-card"><div class="stat-icon-wrap si-teal"><i class="fas fa-fire"></i></div><div class="stat-body"><div class="stat-value">Active</div><div class="stat-label">Status</div></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><h3><i class="fas fa-running"></i> Activity History</h3><a href="/routines" class="view-all-link">Add Activity &rarr;</a></div>
+      <% if(records.length===0){ %><div class="empty-state"><i class="fas fa-running"></i><p>No exercise records yet. <a href="/routines">Log your first routine</a>.</p></div><% } %>
+      <% records.forEach(function(r){ %>
+      <div class="routine-item" style="padding:16px 20px;">
+        <div class="routine-avatar si-green"><i class="fas fa-running"></i></div>
+        <div class="routine-body">
+          <div class="routine-title"><%= r.activity %></div>
+          <div class="routine-sub"><%= new Date(r.date).toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'}) %></div>
+        </div>
+        <span class="glucose-pill badge-normal"><i class="fas fa-check"></i> Done</span>
+      </div>
+      <% }) %>
+    </div>
+  </div>
+  <footer class="footer">Diabetes Management System &copy; <%= new Date().getFullYear() %></footer>
+</div>
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('open');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('open');}
+function setLang(l){document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));document.getElementById('btn-'+l).classList.add('active');}
+</script>
+</body></html>

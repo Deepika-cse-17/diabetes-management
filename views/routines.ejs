@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Routines — Diabetes Management System</title>
+  <link rel="stylesheet" href="/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+<%- include('partials/sidebar') %>
+<div class="page-wrapper">
+  <% var topbarTitle = '<i class="fas fa-calendar-check" style="color:var(--primary);margin-right:6px;"></i> My Routines'; %>
+  <%- include('partials/topbar') %>
+  <div class="tip-banner"><i class="fas fa-info-circle tip-icon"></i><div class="tip-track"><span class="tip-scroll">Walk 10 minutes after meals &nbsp;|&nbsp; Include more fibre and vegetables &nbsp;|&nbsp; Drink at least 8 glasses of water daily &nbsp;|&nbsp; Aim for 7–8 hours of sleep &nbsp;|&nbsp; 5 minutes of deep breathing reduces stress</span></div></div>
+  <div class="page-content">
+    <div class="welcome-banner">
+      <h1 id="pageTitle">Daily Health Log</h1>
+      <p id="pageSubtitle">Record your health data for today and receive personalised recommendations</p>
+    </div>
+    <form action="/submit" method="POST" id="mainForm">
+      <input type="hidden" name="language" id="language" value="en">
+      <div class="section-card">
+        <div class="section-header"><div class="section-icon"><i class="fas fa-user"></i></div><h2 id="personalTitle">Personal Information</h2></div>
+        <div class="form-grid">
+          <div class="input-group"><label id="nameLabel">Full Name</label><input type="text" name="name" required placeholder="Enter your name"></div>
+          <div class="input-group"><label id="ageLabel">Age</label><input type="number" name="age" required placeholder="Enter your age" min="1" max="120"></div>
+          <div class="input-group full-width"><label id="gLabel">Blood Glucose (mg/dL)</label><input type="number" name="glucose" required placeholder="e.g., 110"><span class="hint" id="gHint">Normal fasting range: 70 – 140 mg/dL</span></div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="section-header"><div class="section-icon"><i class="fas fa-utensils"></i></div><h2 id="mTitle">Meals</h2></div>
+        <div class="form-grid">
+          <div class="input-group"><label id="bLabel">Breakfast</label><input type="text" name="breakfast" placeholder="e.g., Idli, Tea"></div>
+          <div class="input-group"><label id="lLabel">Lunch</label><input type="text" name="lunch" placeholder="e.g., Rice, Dal"></div>
+          <div class="input-group"><label id="dLabel">Dinner</label><input type="text" name="dinner" placeholder="e.g., Chapati, Sabzi"></div>
+          <div class="input-group"><label id="sLabel">Snacks</label><input type="text" name="snacks" placeholder="e.g., Fruits, Nuts"></div>
+        </div>
+      </div>
+      <div class="section-card">
+        <div class="section-header"><div class="section-icon"><i class="fas fa-heart"></i></div><h2 id="wellTitle">Wellness</h2></div>
+        <div class="form-grid">
+          <div class="input-group"><label id="aLabel">Physical Activity</label><input type="text" name="activity" placeholder="e.g., Walking 30 mins"></div>
+          <div class="input-group"><label id="medLabel">Meditation</label><input type="text" name="meditation" placeholder="e.g., 10 mins"></div>
+          <div class="input-group full-width"><label id="stLabel">Stress / Day Notes</label><textarea name="stressNote" placeholder="Describe how you felt today..."></textarea></div>
+        </div>
+      </div>
+      <button type="submit" class="submit-btn"><i class="fas fa-chart-line"></i><span id="btnText">Analyse &amp; Get Recommendations</span></button>
+    </form>
+  </div>
+  <footer class="footer">Diabetes Management System &copy; <%= new Date().getFullYear() %> &nbsp;|&nbsp; Consult your doctor for medical advice</footer>
+</div>
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('open');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('open');}
+function setLang(l){document.getElementById('language').value=l;document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));document.getElementById('btn-'+l).classList.add('active');if(l==='ta'){document.getElementById('pageTitle').innerText='அன்றாட ஆரோக்கிய பதிவு';document.getElementById('pageSubtitle').innerText='இன்றைய ஆரோக்கிய தகவல்களை பதிவு செய்யுங்கள்';document.getElementById('personalTitle').innerText='தனிப்பட்ட தகவல்';document.getElementById('nameLabel').innerText='பெயர்';document.getElementById('ageLabel').innerText='வயது';document.getElementById('gLabel').innerText='இரத்த சர்க்கரை (mg/dL)';document.getElementById('gHint').innerText='சாதாரண அளவு: 70 – 140 mg/dL';document.getElementById('mTitle').innerText='உணவு விவரங்கள்';document.getElementById('bLabel').innerText='காலை உணவு';document.getElementById('lLabel').innerText='மதிய உணவு';document.getElementById('dLabel').innerText='இரவு உணவு';document.getElementById('sLabel').innerText='சிற்றுண்டி';document.getElementById('wellTitle').innerText='ஆரோக்கியம்';document.getElementById('aLabel').innerText='உடற்பயிற்சி';document.getElementById('medLabel').innerText='தியானம்';document.getElementById('stLabel').innerText='மன அழுத்த குறிப்புகள்';document.getElementById('btnText').innerText='பகுப்பாய்வு செய்';}else{location.reload();}}
+</script>
+</body></html>

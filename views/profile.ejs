@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile — Diabetes Management System</title>
+  <link rel="stylesheet" href="/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+<%- include('partials/sidebar') %>
+<div class="page-wrapper">
+  <% var topbarTitle = '<i class="fas fa-user-circle" style="color:var(--primary);margin-right:6px;"></i> Profile'; %>
+  <%- include('partials/topbar') %>
+  <div class="page-content">
+    <div class="welcome-banner"><h1>My Profile</h1><p>Your account information.</p></div>
+    <div class="card" style="max-width:520px;">
+      <div class="card-body" style="padding:32px;">
+        <div style="display:flex;align-items:center;gap:20px;margin-bottom:28px;">
+          <div class="user-avatar" style="width:64px;height:64px;font-size:1.6rem;border-radius:16px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;">
+            <%= user.name.charAt(0).toUpperCase() %>
+          </div>
+          <div>
+            <div style="font-size:1.2rem;font-weight:700;color:#0f172a;"><%= user.name %></div>
+            <div style="font-size:0.85rem;color:#64748b;">Patient</div>
+          </div>
+        </div>
+        <div class="profile-field"><span class="profile-label"><i class="fas fa-user"></i> Full Name</span><span class="profile-value"><%= user.name %></span></div>
+        <div class="profile-field"><span class="profile-label"><i class="fas fa-envelope"></i> Email</span><span class="profile-value"><%= user.email %></span></div>
+        <div class="profile-field"><span class="profile-label"><i class="fas fa-user-clock"></i> Age</span><span class="profile-value"><%= user.age || '—' %></span></div>
+        <div class="profile-field"><span class="profile-label"><i class="fas fa-calendar-alt"></i> Member Since</span><span class="profile-value"><%= new Date(user.createdAt).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) %></span></div>
+        <div class="alert-info" style="margin-top:20px;"><i class="fas fa-lock"></i> To update your details, contact support.</div>
+      </div>
+    </div>
+  </div>
+  <footer class="footer">Diabetes Management System &copy; <%= new Date().getFullYear() %></footer>
+</div>
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('open');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('open');}
+function setLang(l){document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));document.getElementById('btn-'+l).classList.add('active');}
+</script>
+</body></html>

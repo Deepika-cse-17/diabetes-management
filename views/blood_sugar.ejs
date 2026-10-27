@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blood Sugar Log — Diabetes Management System</title>
+  <link rel="stylesheet" href="/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+<%- include('partials/sidebar') %>
+<div class="page-wrapper">
+  <% var topbarTitle = '<i class="fas fa-tint" style="color:var(--primary);margin-right:6px;"></i> Blood Sugar Log'; %>
+  <%- include('partials/topbar') %>
+  <div class="page-content">
+    <div class="welcome-banner"><h1>Blood Sugar Log</h1><p>Your glucose readings over the past 30 days.</p></div>
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-header"><h3><i class="fas fa-chart-bar"></i> Glucose History</h3></div>
+      <div class="card-body"><div class="chart-container"><canvas id="bsChart"></canvas></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><h3><i class="fas fa-table"></i> All Readings</h3></div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Date</th><th>Glucose (mg/dL)</th><th>Status</th><th>Breakfast</th><th>Lunch</th><th>Dinner</th></tr></thead>
+          <tbody>
+            <% if(records.length===0){ %><tr><td colspan="6" style="text-align:center;padding:24px;color:#94a3b8;">No records yet. <a href="/routines">Log your first routine</a>.</td></tr><% } %>
+            <% records.forEach(function(r){ %>
+            <tr>
+              <td><%= new Date(r.date).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',year:'numeric'}) %></td>
+              <td><strong><%= r.glucose %></strong></td>
+              <td><span class="glucose-badge <%= r.glucose>180?'badge-high':r.glucose<70?'badge-low':'badge-normal' %>"><%= r.glucose>180?'High':r.glucose<70?'Low':'Normal' %></span></td>
+              <td><%= r.breakfast||'—' %></td>
+              <td><%= r.lunch||'—' %></td>
+              <td><%= r.dinner||'—' %></td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <footer class="footer">Diabetes Management System &copy; <%= new Date().getFullYear() %></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('open');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('open');}
+function setLang(l){document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));document.getElementById('btn-'+l).classList.add('active');}
+const records = <%- JSON.stringify(records.map(r=>({date:r.date,glucose:r.glucose}))) %>;
+const labels  = records.map(r=>new Date(r.date).toLocaleDateString('en-US',{month:'short',day:'numeric'})).reverse();
+const data    = records.map(r=>r.glucose).reverse();
+new Chart(document.getElementById('bsChart').getContext('2d'),{
+  type:'bar',
+  data:{labels,datasets:[{label:'Glucose (mg/dL)',data,backgroundColor:data.map(v=>v>180?'rgba(220,38,38,0.7)':v<70?'rgba(234,88,12,0.7)':'rgba(13,148,136,0.7)'),borderRadius:4}]},
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:40,grid:{color:'#f1f5f9'},ticks:{callback:v=>v+' mg'}}}}
+});
+</script>
+</body></html>

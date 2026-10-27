@@ -1,0 +1,24 @@
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="hamburger" onclick="toggleSidebar()" aria-label="Toggle menu">
+      <i class="fas fa-bars"></i>
+    </button>
+    <span class="topbar-page-title"><%- topbarTitle %></span>
+  </div>
+  <div class="topbar-right">
+    <div class="lang-switcher" id="langSwitcher">
+      <button onclick="setLang('en')" class="lang-btn active" id="btn-en">English</button>
+      <button onclick="setLang('ta')" class="lang-btn" id="btn-ta">தமிழ்</button>
+    </div>
+    <button class="notif-btn" aria-label="Notifications">
+      <i class="fas fa-bell"></i>
+    </button>
+    <a href="/profile" class="user-info" style="text-decoration:none;">
+      <div class="user-avatar"><%= userName ? userName.charAt(0).toUpperCase() : 'U' %></div>
+      <div class="user-meta">
+        <span class="user-name"><%= userName %></span>
+        <span class="user-role">Patient</span>
+      </div>
+    </a>
+  </div>
+</header>

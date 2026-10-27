@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meals — Diabetes Management System</title>
+  <link rel="stylesheet" href="/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+<%- include('partials/sidebar') %>
+<div class="page-wrapper">
+  <% var topbarTitle = '<i class="fas fa-utensils" style="color:var(--primary);margin-right:6px;"></i> Meals'; %>
+  <%- include('partials/topbar') %>
+  <div class="page-content">
+    <div class="welcome-banner"><h1>Meals Log</h1><p>Your recent meal history.</p></div>
+    <div class="card">
+      <div class="card-header"><h3><i class="fas fa-utensils"></i> Recent Meals</h3><a href="/routines" class="view-all-link">Add New &rarr;</a></div>
+      <% if(records.length===0){ %><div class="empty-state"><i class="fas fa-utensils"></i><p>No meal records yet. <a href="/routines">Log your first routine</a>.</p></div><% } %>
+      <% records.forEach(function(r){ %>
+      <div class="routine-item" style="padding:16px 20px;">
+        <div class="routine-avatar si-orange"><i class="fas fa-utensils"></i></div>
+        <div class="routine-body">
+          <div class="routine-title"><%= new Date(r.date).toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'}) %></div>
+          <div class="meal-row"><span class="meal-tag"><i class="fas fa-coffee"></i> <%= r.breakfast||'—' %></span><span class="meal-tag"><i class="fas fa-sun"></i> <%= r.lunch||'—' %></span><span class="meal-tag"><i class="fas fa-moon"></i> <%= r.dinner||'—' %></span><% if(r.snacks){ %><span class="meal-tag"><i class="fas fa-apple-alt"></i> <%= r.snacks %></span><% } %></div>
+        </div>
+        <span class="glucose-pill <%= r.glucose>180?'badge-high':r.glucose<70?'badge-low':'badge-normal' %>"><%= r.glucose %> mg/dL</span>
+      </div>
+      <% }) %>
+    </div>
+  </div>
+  <footer class="footer">Diabetes Management System &copy; <%= new Date().getFullYear() %></footer>
+</div>
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('open');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('open');}
+function setLang(l){document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));document.getElementById('btn-'+l).classList.add('active');}
+</script>
+</body></html>

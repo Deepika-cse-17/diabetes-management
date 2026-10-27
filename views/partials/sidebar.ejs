@@ -1,0 +1,35 @@
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <a href="/">
+      <i class="fas fa-heartbeat"></i>
+      <span>Diabetes Management System</span>
+    </a>
+  </div>
+
+  <nav class="sidebar-nav">
+    <span class="nav-section-label">Main</span>
+    <a href="/"            class="<%= page==='dashboard'   ? 'active' : '' %>"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+    <a href="/routines"    class="<%= page==='routines'    ? 'active' : '' %>"><i class="fas fa-calendar-check"></i> My Routines</a>
+    <a href="/blood-sugar" class="<%= page==='blood-sugar' ? 'active' : '' %>"><i class="fas fa-tint"></i> Blood Sugar Log</a>
+
+    <span class="nav-section-label">Health</span>
+    <a href="/meals"      class="<%= page==='meals'      ? 'active' : '' %>"><i class="fas fa-utensils"></i> Meals</a>
+    <a href="/exercise"   class="<%= page==='exercise'   ? 'active' : '' %>"><i class="fas fa-running"></i> Exercise</a>
+    <a href="/medication" class="<%= page==='medication' ? 'active' : '' %>"><i class="fas fa-pills"></i> Medication</a>
+    <a href="/reports"    class="<%= page==='reports'    ? 'active' : '' %>"><i class="fas fa-file-medical-alt"></i> Reports</a>
+
+    <span class="nav-section-label">Account</span>
+    <a href="/profile"    class="<%= page==='profile'    ? 'active' : '' %>"><i class="fas fa-user-circle"></i> Profile</a>
+    <a href="/logout" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <div class="glucose-meter-card">
+      <i class="fas fa-stethoscope"></i>
+      <strong>Health Monitor</strong>
+      <p>Track your glucose and stay healthy every day</p>
+    </div>
+  </div>
+</aside>

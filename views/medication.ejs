@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medication — Diabetes Management System</title>
+  <link rel="stylesheet" href="/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+<%- include('partials/sidebar') %>
+<div class="page-wrapper">
+  <% var topbarTitle = '<i class="fas fa-pills" style="color:var(--primary);margin-right:6px;"></i> Medication'; %>
+  <%- include('partials/topbar') %>
+  <div class="page-content">
+    <div class="welcome-banner"><h1>Medication</h1><p>Track your daily medication schedule.</p></div>
+    <div class="card">
+      <div class="card-header"><h3><i class="fas fa-pills"></i> Common Diabetes Medications</h3></div>
+      <div class="card-body">
+        <div class="med-list">
+          <div class="med-item"><div class="med-icon si-purple"><i class="fas fa-capsules"></i></div><div class="med-body"><div class="med-name">Metformin</div><div class="med-desc">Helps lower blood glucose by reducing liver glucose production. Typically taken with meals.</div></div><span class="med-badge">Common</span></div>
+          <div class="med-item"><div class="med-icon si-blue"><i class="fas fa-syringe"></i></div><div class="med-body"><div class="med-name">Insulin</div><div class="med-desc">Regulates blood sugar levels. Type 1 diabetics require it; some Type 2 patients may also need it.</div></div><span class="med-badge">Prescribed</span></div>
+          <div class="med-item"><div class="med-icon si-teal"><i class="fas fa-pills"></i></div><div class="med-body"><div class="med-name">Glipizide</div><div class="med-desc">Stimulates the pancreas to produce more insulin. Taken before meals.</div></div><span class="med-badge">Common</span></div>
+          <div class="med-item"><div class="med-icon si-green"><i class="fas fa-tablets"></i></div><div class="med-body"><div class="med-name">Sitagliptin</div><div class="med-desc">Helps control blood sugar levels by increasing insulin and decreasing glucagon.</div></div><span class="med-badge">Common</span></div>
+        </div>
+        <div class="alert-info"><i class="fas fa-exclamation-circle"></i> Always follow your doctor's prescription. Do not self-medicate.</div>
+      </div>
+    </div>
+  </div>
+  <footer class="footer">Diabetes Management System &copy; <%= new Date().getFullYear() %></footer>
+</div>
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('open');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('open');}
+function setLang(l){document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));document.getElementById('btn-'+l).classList.add('active');}
+</script>
+</body></html>

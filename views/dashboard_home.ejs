@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Diabetes Management System</title>
+  <link rel="stylesheet" href="/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+
+<%- include('partials/sidebar') %>
+
+<div class="page-wrapper">
+  <% var topbarTitle = '<i class="fas fa-tachometer-alt" style="color:var(--primary);margin-right:6px;"></i> Dashboard'; %>
+  <%- include('partials/topbar') %>
+
+  <div class="page-content">
+
+    <!-- Welcome -->
+    <div class="welcome-banner">
+      <h1>Welcome, <%= userName %>!</h1>
+      <p>Manage your health and routines effectively.</p>
+    </div>
+
+    <!-- Stat Cards -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon-wrap si-blue"><i class="fas fa-clipboard-list"></i></div>
+        <div class="stat-body">
+          <div class="stat-value"><%= totalRoutines %></div>
+          <div class="stat-label">Total Routines</div>
+          <a href="/routines" class="stat-link">View all routines &rarr;</a>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon-wrap si-teal"><i class="fas fa-tint"></i></div>
+        <div class="stat-body">
+          <% var avgGlucose = recentRoutines.length ? Math.round(recentRoutines.reduce((s,r)=>s+r.glucose,0)/recentRoutines.length) : 0; %>
+          <div class="stat-value"><%= avgGlucose %> <span style="font-size:0.8rem;color:var(--text-sub)">mg/dL</span></div>
+          <div class="stat-label">Avg. Blood Sugar</div>
+          <div class="stat-week">This Week</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon-wrap si-green"><i class="fas fa-running"></i></div>
+        <div class="stat-body">
+          <% var exCount = recentRoutines.filter(r=>r.activity&&r.activity.length>2).length; %>
+          <div class="stat-value"><%= exCount %></div>
+          <div class="stat-label">Exercises</div>
+          <div class="stat-week">This Week</div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon-wrap si-purple"><i class="fas fa-pills"></i></div>
+        <div class="stat-body">
+          <div class="stat-value">—</div>
+          <div class="stat-label">Medications</div>
+          <div class="stat-week">This Week</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart + Today's Summary -->
+    <div class="dashboard-grid">
+
+      <!-- Blood Sugar Trend Chart -->
+      <div class="card chart-card">
+        <div class="card-header">
+          <h3><i class="fas fa-chart-line"></i> Blood Sugar Trend</h3>
+          <select class="chart-select"><option>This Week</option></select>
+        </div>
+        <div class="card-body">
+          <div class="chart-container">
+            <canvas id="glucoseChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Today's Summary -->
+      <div class="card">
+        <div class="card-header">
+          <h3><i class="fas fa-clipboard-check"></i> Today's Summary</h3>
+          <span style="font-size:0.75rem;color:var(--text-muted);"><%= new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) %></span>
+        </div>
+        <div class="summary-list">
+          <% var tr = todayRoutine; %>
+          <% var mealsLogged = tr ? [tr.breakfast,tr.lunch,tr.dinner].filter(function(m){return m&&m.length>0}).length : 0; %>
+          <% var exDone = tr && tr.activity && tr.activity.length>2 ? 1 : 0; %>
+
+          <div class="summary-item">
+            <div class="summary-icon si-orange"><i class="fas fa-utensils"></i></div>
+            <div class="summary-text">
+              <div class="s-label">Meals</div>
+              <div class="s-sub"><%= mealsLogged %> / 3 Completed</div>
+            </div>
+            <div class="summary-check <%= mealsLogged===3 ? 'done' : '' %>">
+              <% if(mealsLogged===3){ %><i class="fas fa-check-circle"></i><% } else { %><i class="fas fa-circle"></i><% } %>
+            </div>
+          </div>
+
+          <div class="summary-item">
+            <div class="summary-icon si-green"><i class="fas fa-running"></i></div>
+            <div class="summary-text">
+              <div class="s-label">Exercise</div>
+              <div class="s-sub"><%= exDone %> / 1 Completed</div>
+            </div>
+            <div class="summary-check <%= exDone===1 ? 'done' : '' %>">
+              <% if(exDone===1){ %><i class="fas fa-check-circle"></i><% } else { %><i class="fas fa-circle"></i><% } %>
+            </div>
+          </div>
+
+          <div class="summary-item">
+            <div class="summary-icon si-purple"><i class="fas fa-pills"></i></div>
+            <div class="summary-text">
+              <div class="s-label">Medication</div>
+              <div class="s-sub">Log on Medication page</div>
+            </div>
+            <div class="summary-check">
+              <i class="fas fa-circle"></i>
+            </div>
+          </div>
+
+          <div class="summary-item">
+            <div class="summary-icon si-teal"><i class="fas fa-tint"></i></div>
+            <div class="summary-text">
+              <div class="s-label">Water Intake</div>
+              <div class="s-sub">Track your intake</div>
+            </div>
+            <div class="summary-check">
+              <div class="mini-progress">
+                <div class="mini-fill" style="width:75%"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Routines + Chatbot -->
+    <div class="bottom-grid">
+
+      <!-- Recent Routines -->
+      <div class="card">
+        <div class="card-header">
+          <h3><i class="fas fa-list-ul"></i> Recent Routines</h3>
+          <a href="/routines" class="view-all-link">View All &rarr;</a>
+        </div>
+        <div class="routine-list">
+          <% if(recentRoutines.length === 0){ %>
+            <div class="empty-state">
+              <i class="fas fa-clipboard-list"></i>
+              <p>No routines logged yet. <a href="/routines">Add your first routine</a>.</p>
+            </div>
+          <% } %>
+          <% recentRoutines.slice(0,5).forEach(function(r){ %>
+            <div class="routine-item">
+              <div class="routine-avatar si-orange"><i class="fas fa-heartbeat"></i></div>
+              <div class="routine-body">
+                <div class="routine-title"><%= r.name %> &mdash; <%= r.glucose %> mg/dL</div>
+                <div class="routine-sub"><%= new Date(r.date).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'}) %> &nbsp;|&nbsp; <%= r.breakfast||'—' %>, <%= r.lunch||'—' %></div>
+              </div>
+              <span class="glucose-pill <%= r.glucose>180?'badge-high':r.glucose<70?'badge-low':'badge-normal' %>"><%= r.glucose %></span>
+            </div>
+          <% }) %>
+        </div>
+      </div>
+
+      <!-- Inline Chatbot -->
+      <div class="card chatbot-panel" id="chatbotPanel">
+        <div class="card-header">
+          <h3><i class="fas fa-robot"></i> Health Assistant (Chatbot)</h3>
+        </div>
+        <div class="chatbot-intro-bar">Ask me anything about diabetes management.</div>
+        <div id="chat-messages"></div>
+        <div class="chatbot-input-row">
+          <input type="text" id="userMsg" placeholder="Type your message..." onkeypress="if(event.key==='Enter')sendMsg()">
+          <button onclick="sendMsg()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="card" style="margin-bottom:20px;">
+      <div class="card-header">
+        <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+      </div>
+      <div class="quick-actions-grid">
+        <a href="/routines" class="qa-btn qa-blue">
+          <i class="fas fa-plus-circle"></i> Add Routine
+        </a>
+        <a href="/blood-sugar" class="qa-btn qa-green">
+          <i class="fas fa-tint"></i> Log Blood Sugar
+        </a>
+        <a href="/reports" class="qa-btn qa-orange">
+          <i class="fas fa-file-chart-line"></i> Generate Report
+        </a>
+        <a href="#" onclick="document.getElementById('userMsg').focus();return false;" class="qa-btn qa-purple">
+          <i class="fas fa-robot"></i> Ask Chatbot
+        </a>
+      </div>
+    </div>
+
+  </div><!-- end page-content -->
+
+  <footer class="footer">Diabetes Management System &copy; <%= new Date().getFullYear() %> &nbsp;|&nbsp; Consult your doctor for medical advice</footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('open');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('open');}
+function setLang(l){document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));document.getElementById('btn-'+l).classList.add('active');}
+
+// Chart
+const labels = <%- chartLabels %>;
+const data   = <%- chartData %>;
+const ctx = document.getElementById('glucoseChart').getContext('2d');
+new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels,
+    datasets: [{
+      label: 'Blood Glucose (mg/dL)',
+      data,
+      fill: true,
+      backgroundColor: 'rgba(26,86,219,0.08)',
+      borderColor: '#1a56db',
+      borderWidth: 2.5,
+      tension: 0.4,
+      pointBackgroundColor: data.map(v => v===null?'transparent':v>180?'#dc2626':v<70?'#ea580c':'#0d9488'),
+      pointBorderColor: '#fff',
+      pointBorderWidth: 2,
+      pointRadius: data.map(v => v===null?0:5),
+      pointHoverRadius: 7,
+      spanGaps: true
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      annotation: {},
+      tooltip: {
+        callbacks: {
+          label: ctx => {
+            const v = ctx.parsed.y;
+            if(v===null) return 'No data';
+            return v + ' mg/dL — ' + (v>180?'High':v<70?'Low':'Normal');
+          }
+        }
+      }
+    },
+    scales: {
+      x: { grid:{display:false}, ticks:{font:{size:11},color:'#94a3b8'} },
+      y: {
+        min: 60, max: 220,
+        grid: { color:'#f1f5f9' },
+        ticks: { font:{size:11}, color:'#94a3b8', callback: v=>v+' mg' }
+      }
+    }
+  }
+});
+
+// Draw target range shading
+const targetPlugin = {
+  id:'targetRange',
+  beforeDraw(chart){
+    const {ctx, chartArea:{top,bottom,left,right}, scales:{y}} = chart;
+    const y1 = y.getPixelForValue(140);
+    const y2 = y.getPixelForValue(70);
+    ctx.save();
+    ctx.fillStyle = 'rgba(16,185,129,0.07)';
+    ctx.fillRect(left, y1, right-left, y2-y1);
+    ctx.strokeStyle = 'rgba(16,185,129,0.4)';
+    ctx.setLineDash([4,4]);
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(left,y1); ctx.lineTo(right,y1); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(left,y2); ctx.lineTo(right,y2); ctx.stroke();
+    ctx.restore();
+  }
+};
+Chart.register(targetPlugin);
+
+// Chatbot
+function sendMsg(){
+  const input=document.getElementById('userMsg'), msg=input.value.trim();
+  if(!msg) return;
+  const box=document.getElementById('chat-messages');
+  box.innerHTML+=`<div class="chat-msg user"><span>${msg}</span></div>`;
+  fetch('/chatbot',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg,language:'en'})})
+  .then(r=>r.json()).then(d=>{
+    box.innerHTML+=`<div class="chat-msg bot"><i class="fas fa-robot"></i><span>${d.reply}</span></div>`;
+    box.scrollTop=box.scrollHeight;
+  });
+  input.value=''; box.scrollTop=box.scrollHeight;
+}
+</script>
+</body>
+</html>
