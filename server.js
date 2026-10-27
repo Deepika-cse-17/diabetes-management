@@ -86,48 +86,54 @@ app.get("/logout", (req, res) => {
 
 // ── Dashboard (home) ──
 app.get("/", requireLogin, async (req, res) => {
-  const userId   = req.session.userId;
-  const userName = req.session.userName;
+  try {
+    const userId   = req.session.userId;
+    const userName = req.session.userName;
 
-  // Last 7 routines for chart + recent list
-  const recentRoutines = await Routine.find({ userId }).sort({ date: -1 }).limit(7);
-  const totalRoutines  = await Routine.countDocuments({ userId });
+    const recentRoutines = await Routine.find({ userId }).sort({ date: -1 }).limit(7);
+    const totalRoutines  = await Routine.countDocuments({ userId });
 
-  // Build 7-day glucose trend (fill missing days with null)
-  const today = new Date();
-  const chartLabels = [];
-  const chartData   = [];
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date(today);
-    d.setDate(today.getDate() - i);
-    chartLabels.push(d.toLocaleDateString("en-US", { weekday: "short" }));
-    const dayRecord = recentRoutines.find(r => {
-      const rd = new Date(r.date);
-      return rd.getDate() === d.getDate() && rd.getMonth() === d.getMonth();
+    // Build 7-day glucose trend
+    const today = new Date();
+    const chartLabels = [];
+    const chartData   = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(today);
+      d.setDate(today.getDate() - i);
+      chartLabels.push(d.toLocaleDateString("en-US", { weekday: "short" }));
+      const dayRecord = recentRoutines.find(r => {
+        const rd = new Date(r.date);
+        return rd.getDate() === d.getDate() && rd.getMonth() === d.getMonth() && rd.getFullYear() === d.getFullYear();
+      });
+      chartData.push(dayRecord ? dayRecord.glucose : null);
+    }
+
+    const todayRoutine = recentRoutines[0] || null;
+
+    res.render("dashboard_home", {
+      userName,
+      totalRoutines,
+      recentRoutines,
+      todayRoutine,
+      chartLabels: JSON.stringify(chartLabels),
+      chartData:   JSON.stringify(chartData),
+      page: "dashboard"
     });
-    chartData.push(dayRecord ? dayRecord.glucose : null);
+  } catch (err) {
+    console.error("Dashboard error:", err.message);
+    res.status(500).send("Server error: " + err.message);
   }
-
-  // Latest routine for today's summary
-  const todayRoutine = recentRoutines[0] || null;
-
-  res.render("dashboard_home", {
-    userName,
-    totalRoutines,
-    recentRoutines,
-    todayRoutine,
-    chartLabels: JSON.stringify(chartLabels),
-    chartData:   JSON.stringify(chartData),
-    page: "dashboard"
-  });
 });
 
 // ── My Routines (log form) ──
 app.get("/routines", requireLogin, (req, res) => {
-  res.render("routines", { userName: req.session.userName, page: "routines" });
+  try {
+    res.render("routines", { userName: req.session.userName, page: "routines" });
+  } catch (err) { res.status(500).send("Error: " + err.message); }
 });
 
 app.post("/submit", requireLogin, async (req, res) => {
+  try {
   const { name, age, glucose, breakfast, lunch, dinner, snacks, activity, meditation, stressNote, language } = req.body;
   const routine = new Routine({ name, age, glucose, breakfast, lunch, dinner, snacks, activity, meditation, stressNote, userId: req.session.userId });
   await routine.save();
@@ -149,6 +155,7 @@ app.post("/submit", requireLogin, async (req, res) => {
   if (stressNote && stressNote.length > 20) recommendations.push({ text: language === "ta" ? "மன அழுத்தம் அதிகமாக உள்ளது — ஓய்வு எடுங்கள்" : "Stress level seems high — take adequate rest",  severity: "High"   });
 
   res.render("dashboard", { routine, recommendations, language, userName: req.session.userName, page: "routines" });
+  } catch (err) { console.error("Submit error:", err.message); res.status(500).send("Error: " + err.message); }
 });
 
 // ── Blood Sugar Log ──
